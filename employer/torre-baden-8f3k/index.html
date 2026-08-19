@@ -38,17 +38,6 @@ body{
   display:inline-flex;align-items:center;
   font-size:1rem;
 }
-.logo .light{color:var(--gray-light);font-weight:900}
-.logo .cross{
-  display:inline-flex;align-items:center;justify-content:center;
-  background:var(--red);color:var(--white);
-  border-radius:50%;
-  width:0.9em;height:0.9em;
-  font-size:0.6em;font-weight:900;
-  margin-left:0.35em;
-  line-height:1;
-  padding-bottom:0.05em;
-}
 .topbar-tag{
   font-size:0.72rem;font-weight:700;
   color:var(--gray);
@@ -252,7 +241,7 @@ h1.job-title{
 <body>
 
 <div class="topbar">
-  <div class="logo">stell<span class="light">en</span>schraube<span class="cross">+</span></div>
+  <div class="logo">Restaurant Torre Baden</div>
   <div class="topbar-tag">Bewerbung</div>
 </div>
 
@@ -296,7 +285,7 @@ h1.job-title{
       <div class="form-field">
         <label>Hast du ein EFZ als Koch/Köchin?</label>
         <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="efz" value="ja" required> Ja</label>
+          <label class="radio-option"><input type="radio" name="efz" value="ja" data-required> Ja</label>
           <label class="radio-option"><input type="radio" name="efz" value="nein"> Nein, aber vergleichbare Erfahrung</label>
         </div>
       </div>
@@ -307,7 +296,7 @@ h1.job-title{
       <div class="form-field">
         <label>Wie viel Berufserfahrung bringst du mit?</label>
         <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="erfahrung" value="0-1" required> Unter 1 Jahr</label>
+          <label class="radio-option"><input type="radio" name="erfahrung" value="0-1" data-required> Unter 1 Jahr</label>
           <label class="radio-option"><input type="radio" name="erfahrung" value="1-3"> 1 bis 3 Jahre</label>
           <label class="radio-option"><input type="radio" name="erfahrung" value="3+"> 3+ Jahre</label>
         </div>
@@ -318,7 +307,7 @@ h1.job-title{
     <div class="form-step" data-step="3" hidden>
       <div class="form-field">
         <label>Ab wann könntest du starten?</label>
-        <select name="start" required>
+        <select name="start" data-required>
           <option value="">Bitte wählen</option>
           <option value="sofort">Sofort</option>
           <option value="1monat">Innert 1 Monat</option>
@@ -332,11 +321,11 @@ h1.job-title{
     <div class="form-step" data-step="4" hidden>
       <div class="form-field">
         <label>Name</label>
-        <input type="text" name="name" placeholder="Vor- und Nachname" required>
+        <input type="text" name="name" placeholder="Vor- und Nachname" data-required>
       </div>
       <div class="form-field">
         <label>Telefon</label>
-        <input type="tel" name="telefon" placeholder="079 XXX XX XX" required>
+        <input type="tel" name="telefon" placeholder="079 XXX XX XX" data-required>
       </div>
     </div>
 
@@ -344,11 +333,11 @@ h1.job-title{
     <div class="form-step" data-step="5" hidden>
       <div class="form-field">
         <label>E-Mail</label>
-        <input type="email" name="email" placeholder="deine@email.ch" required>
+        <input type="email" name="email" placeholder="deine@email.ch" data-required>
       </div>
     </div>
 
-    <button type="submit" class="form-btn" id="formBtn">Weiter</button>
+    <button type="button" class="form-btn" id="formBtn">Weiter</button>
     <div class="form-note">Deine Daten werden vertraulich behandelt und ausschliesslich zur Vermittlung an Restaurant Torre Baden verwendet.</div>
   </form>
 
@@ -360,7 +349,7 @@ h1.job-title{
 </div>
 
 <div class="mini-footer">
-  Vermittelt durch <a href="https://stellenschraube.ch">stellenschraube</a> — Testseite, nicht für die Indexierung bestimmt.
+  Restaurant Torre Baden — Testseite, nicht für die Indexierung bestimmt.
 </div>
 
 <script>
@@ -383,24 +372,21 @@ h1.job-title{
 
   function currentStepValid(){
     const stepEl = steps[current-1];
-    const fields = stepEl.querySelectorAll('input,select');
+    const fields = stepEl.querySelectorAll('[data-required]');
     for (const f of fields){
-      if (f.required){
-        if (f.type === 'radio'){
-          const group = stepEl.querySelectorAll('input[name="'+f.name+'"]');
-          if (!Array.from(group).some(r => r.checked)) return false;
-        } else if (!f.value){
-          return false;
-        }
+      if (f.type === 'radio'){
+        const group = stepEl.querySelectorAll('input[name="'+f.name+'"]');
+        if (!Array.from(group).some(r => r.checked)) return false;
+      } else if (!f.value){
+        return false;
       }
     }
     return true;
   }
 
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
+  formBtn.addEventListener('click', function(){
     if (!currentStepValid()){
-      form.reportValidity ? form.reportValidity() : alert('Bitte fülle alle Felder aus.');
+      alert('Bitte fülle alle Felder aus.');
       return;
     }
     if (current < total){
@@ -411,6 +397,8 @@ h1.job-title{
       successCard.style.display = 'block';
     }
   });
+
+  form.addEventListener('submit', function(e){ e.preventDefault(); });
 
   render();
 })();
