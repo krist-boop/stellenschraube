@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>stellenschraube — Wir finden die, die nicht suchen</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --white:#FAFAF7;
+  --black:#0A0A08;
+  --gray:#555;
+  --gray-light:#8A8A82;
+  --line:#0A0A08;
+  --red:#DC2626;
+  --red-dark:#991B1B;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--white);
+  color:var(--black);
+  font-size:15px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ══ LOGO ══════════════════════ */
+.logo{
+  font-weight:900;
+  letter-spacing:-0.02em;
+  display:inline-flex;align-items:center;
+}
+.logo .light{color:var(--gray-light);font-weight:900}
+.logo .cross{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--red);color:var(--white);
+  border-radius:50%;
+  width:0.9em;height:0.9em;
+  font-size:0.6em;font-weight:900;
+  margin-left:0.35em;
+  line-height:1;
+  padding-bottom:0.05em;
+}
+
+/* ══ NAV ══════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:1rem 2rem;
+  background:var(--white);
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+}
+nav .logo{font-size:1.15rem}
+.nav-right{display:flex;align-items:center;gap:2rem}
+.nav-right a{
+  font-size:0.82rem;font-weight:700;
+  color:var(--black);text-decoration:none;
+  text-transform:uppercase;letter-spacing:0.05em;
+}
+.nav-right a:hover{color:var(--red)}
+.nav-cta{
+  background:var(--black);color:var(--white) !important;
+  padding:0.6rem 1.2rem;
+  font-weight:700;
+}
+.nav-cta:hover{background:var(--red);color:var(--white) !important}
+
+/* ══ SECTION NUM LABEL (kein dot) ══ */
+.section-num{
+  font-size:0.75rem;
+  font-weight:700;
+  letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--gray);
+  margin-bottom:2rem;
+}
+
+/* ══ HERO ══════════════════════ */
+.hero{
+  min-height:calc(100vh - 57px);
+  margin-top:57px;
+  border-bottom:1px solid var(--line);
+  display:grid;
+  grid-template-columns:1.35fr 1fr;
+}
+.hero-left{
+  padding:5rem 3rem 4rem;
+  border-right:1px solid var(--line);
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero-swiss{
+  position:absolute;
+  right:-15%;bottom:-10%;
+  width:70%;
+  opacity:0.04;
+  pointer-events:none;
+}
+.hero-swiss svg{width:100%;height:auto}
+.hero-left-content{position:relative;z-index:1}
+.hero-eyebrow{
+  font-size:0.75rem;font-weight:700;
+  letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--red);
+  margin-bottom:2rem;
+  padding-bottom:1rem;
+  border-bottom:1px solid var(--line);
+  display:inline-block;
+  padding-right:2rem;
+}
+h1.hero-title{
+  font-weight:900;
+  font-size:clamp(2.5rem,5.5vw,5rem);
+  line-height:0.95;
+  letter-spacing:-0.04em;
+  color:var(--black);
+  margin-bottom:2rem;
+}
+h1.hero-title .red{color:var(--red)}
+.hero-sub{
+  font-size:1rem;color:var(--gray);
+  max-width:44ch;line-height:1.6;
+  margin-bottom:2.5rem;
+}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:0.75rem;
+  background:var(--black);color:var(--white);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:0.9rem;font-weight:700;
+  padding:1rem 1.75rem;
+  text-decoration:none;
+  border:none;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.05em;
+  transition:background 0.15s;
+}
+.btn-primary:hover{background:var(--red)}
+.btn-primary .arrow{font-weight:900;font-size:1.1rem}
+
+/* ══ HERO FORM ══════════════════ */
+.hero-right{
+  padding:5rem 3rem 4rem;
+  display:flex;flex-direction:column;justify-content:center;
+  background:var(--white);
+}
+.form-label{
+  font-size:0.75rem;font-weight:700;
+  letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--red);
+  margin-bottom:1rem;
+  padding-bottom:1rem;
+  border-bottom:1px solid var(--line);
+}
+.hero-form h3{
+  font-weight:900;
+  font-size:1.75rem;line-height:1.1;
+  letter-spacing:-0.02em;
+  margin-bottom:1rem;
+}
+.hero-form h3 .red{color:var(--red)}
+.hero-form-sub{
+  font-size:0.9rem;color:var(--gray);
+  margin-bottom:2rem;line-height:1.55;
+}
+.form-field{margin-bottom:1rem}
+.form-field label{
+  display:block;
+  font-size:0.72rem;font-weight:700;
+  color:var(--black);
+  letter-spacing:0.1em;text-transform:uppercase;
+  margin-bottom:0.4rem;
+}
+.form-field select,
+.form-field input,
+.form-field textarea{
+  width:100%;
+  padding:0.75rem 0.9rem;
+  border:1px solid var(--line);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:0.9rem;
+  color:var(--black);
+  background:var(--white);
+  border-radius:0;
+  appearance:none;-webkit-appearance:none;
+  transition:background 0.15s;
+}
+.form-field select:focus,
+.form-field input:focus,
+.form-field textarea:focus{
+  outline:none;
+  background:#F0EEE8;
+}
+.form-field textarea{resize:vertical;min-height:90px;font-family:Arial,Helvetica,sans-serif}
+.form-btn{
+  width:100%;margin-top:0.5rem;
+  background:var(--black);color:var(--white);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:0.9rem;font-weight:700;
+  padding:1rem;border:none;
+  cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.05em;
+  transition:background 0.2s;
+}
+.form-btn:hover{background:var(--red)}
+
+/* ══ MARQUEE ══════════════════ */
+.marquee{
+  padding:1.5rem 0;
+  border-bottom:1px solid var(--line);
+  overflow:hidden;
+  background:var(--black);
+  color:var(--white);
+}
+.marquee-track{
+  display:flex;gap:5rem;
+  animation:scroll 40s linear infinite;
+  white-space:nowrap;
+}
+@keyframes scroll{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+.marquee-item{
+  font-size:0.95rem;font-weight:900;
+  letter-spacing:0.05em;text-transform:uppercase;
+  flex-shrink:0;
+}
+.marquee-sep{
+  color:var(--red);flex-shrink:0;
+  font-weight:900;
+}
+
+/* ══ SECTION BASE ══════════════ */
+section{padding:6rem 3rem;border-bottom:1px solid var(--line)}
+.inner{max-width:1300px;margin:0 auto}
+.inner-narrow{max-width:900px;margin:0 auto}
+
+h2.section-h{
+  font-weight:900;
+  font-size:clamp(2rem,4vw,3.5rem);
+  line-height:1;letter-spacing:-0.03em;
+  color:var(--black);
+  max-width:20ch;
+  margin-bottom:1.5rem;
+}
+h2.section-h .red{color:var(--red)}
+.section-lead{
+  font-size:1rem;color:var(--gray);
+  max-width:52ch;line-height:1.6;
+  margin-bottom:4rem;
+}
+
+/* ══ PAINPOINT ══════════════════ */
+.painpoint{background:var(--black);color:var(--white)}
+.painpoint .section-num{color:var(--gray-light)}
+.painpoint h2.section-h{color:var(--white)}
+.painpoint .section-lead{color:#A8A8A2}
+.painpoint{border-bottom:none}
+
+.stats-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-top:1px solid #333;
+}
+.stat-item{
+  padding:3rem 2rem;
+  border-right:1px solid #333;
+}
+.stat-item:last-child{border-right:none}
+.stat-num{
+  font-weight:900;
+  font-size:clamp(4rem,7vw,6rem);
+  line-height:1;
+  letter-spacing:-0.05em;
+  margin-bottom:1.25rem;
+  color:var(--white);
+}
+.stat-num .red{color:var(--red)}
+.stat-desc{
+  font-size:0.9rem;
+  color:#A8A8A2;
+  line-height:1.55;
+  max-width:26ch;
+}
+
+/* ══ APPROACH ══════════════════ */
+.approach-grid{
+  display:grid;grid-template-columns:1fr 1.4fr;
+  gap:5rem;align-items:start;
+}
+.approach-list{
+  list-style:none;
+  border-top:1px solid var(--line);
+}
+.approach-list li{
+  display:grid;
+  grid-template-columns:80px 1fr;
+  gap:2rem;
+  padding:1.75rem 0;
+  border-bottom:1px solid var(--line);
+  align-items:start;
+}
+.approach-num{
+  font-weight:900;
+  font-size:1.75rem;
+  color:var(--red);
+  letter-spacing:-0.02em;
+  line-height:1;
+}
+.approach-title{
+  font-weight:900;
+  font-size:1.15rem;
+  color:var(--black);
+  margin-bottom:0.4rem;
+  letter-spacing:-0.01em;
+}
+.approach-text{
+  font-size:0.9rem;
+  color:var(--gray);
+  line-height:1.55;
+}
+
+/* ══ HOW IT WORKS ══════════════ */
+.how{background:var(--white)}
+.phones-row{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:0;
+  margin-top:3rem;
+  border:1px solid var(--line);
+}
+.phone-cell{
+  padding:3rem 1.5rem;
+  border-right:1px solid var(--line);
+  display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  background:var(--white);
+}
+.phone-cell:last-child{border-right:none}
+.phone-step-label{
+  text-align:center;
+}
+.phone-step-num{
+  display:block;
+  font-weight:900;
+  font-size:2.5rem;
+  color:var(--red);
+  line-height:1;
+  letter-spacing:-0.03em;
+  margin-bottom:0.5rem;
+}
+.phone-step-title{
+  font-weight:900;
+  font-size:0.9rem;
+  color:var(--black);
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+}
+.phone{
+  width:100%;max-width:200px;
+  aspect-ratio:9/18;
+  background:var(--black);
+  border-radius:22px;
+  padding:8px;
+  position:relative;
+}
+.phone-notch{
+  position:absolute;
+  top:11px;left:50%;transform:translateX(-50%);
+  width:60px;height:5px;
+  background:var(--black);
+  border-radius:6px;
+  z-index:2;
+}
+.phone-screen{
+  width:100%;height:100%;
+  background:var(--white);
+  border-radius:16px;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  padding:1rem 0.85rem;
+  gap:0.5rem;
+  font-size:10px;
+}
+
+/* Phone 1 Content */
+.fb-header{
+  display:flex;align-items:center;gap:0.5rem;
+  padding-bottom:0.5rem;
+  border-bottom:1px solid #E5E5E5;
+}
+.fb-avatar{
+  width:24px;height:24px;
+  background:var(--red);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.6rem;color:var(--white);font-weight:900;
+}
+.fb-name{font-size:0.65rem;font-weight:700;color:var(--black)}
+.fb-sub{font-size:0.55rem;color:var(--gray)}
+.fb-headline{font-size:0.7rem;font-weight:700;color:var(--black);line-height:1.3}
+.fb-copy{font-size:0.6rem;color:var(--gray);line-height:1.4}
+.fb-image{
+  height:60px;
+  background:var(--black);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--red);font-size:1.5rem;font-weight:900;
+}
+.fb-cta{
+  background:var(--black);color:var(--white);
+  padding:6px 8px;
+  text-align:center;
+  font-size:0.62rem;font-weight:700;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+}
+.fb-footer{
+  display:flex;justify-content:space-between;
+  padding-top:4px;
+  border-top:1px solid #E5E5E5;
+  font-size:0.55rem;color:var(--gray);
+}
+
+/* Phone 2 Content */
+.quiz-header{font-size:0.55rem;color:var(--gray);font-weight:700;text-transform:uppercase;letter-spacing:0.08em}
+.quiz-progress{
+  height:3px;
+  background:#E5E5E5;
+}
+.quiz-progress-fill{
+  width:40%;height:100%;
+  background:var(--red);
+}
+.quiz-question{
+  font-size:0.7rem;font-weight:700;
+  color:var(--black);line-height:1.3;
+  padding:0.4rem 0;
+}
+.quiz-option{
+  border:1px solid #DDD;
+  padding:0.4rem 0.55rem;
+  font-size:0.6rem;color:var(--gray);
+  font-weight:400;
+}
+.quiz-option.selected{
+  border:1.5px solid var(--red);
+  color:var(--red-dark);
+  font-weight:700;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.quiz-btn{
+  margin-top:auto;
+  background:var(--black);color:var(--white);
+  padding:0.55rem;text-align:center;
+  font-size:0.62rem;font-weight:700;
+  letter-spacing:0.05em;text-transform:uppercase;
+}
+
+/* Phone 3 Content */
+.wa-screen{background:#ECE5DD !important;gap:0.4rem !important;padding-top:0.5rem !important}
+.wa-header{
+  background:#075E54;color:#fff;
+  padding:0.4rem 0.6rem;
+  font-size:0.62rem;font-weight:700;
+  display:flex;align-items:center;gap:0.4rem;
+  margin:-1rem -0.85rem 0.5rem;
+}
+.wa-time{
+  text-align:center;
+  font-size:0.55rem;color:#667781;
+  background:rgba(255,255,255,0.7);
+  padding:2px 6px;
+  align-self:center;
+}
+.wa-msg{
+  background:#fff;
+  padding:0.5rem;
+  max-width:90%;
+  align-self:flex-start;
+  font-size:0.58rem;color:var(--black);
+  line-height:1.4;
+}
+.wa-msg-header{
+  font-size:0.5rem;font-weight:900;
+  color:var(--red);margin-bottom:3px;
+  letter-spacing:0.08em;text-transform:uppercase;
+}
+.wa-msg-content strong{color:var(--black);font-weight:700}
+.wa-divider{
+  height:1px;background:#E5E5E5;
+  margin:4px 0;
+}
+.wa-meta{font-size:0.5rem;color:var(--gray);line-height:1.4}
+.wa-time-sent{
+  font-size:0.5rem;color:var(--gray);
+  text-align:right;margin-top:2px;
+}
+
+/* ══ SECTORS ══════════════════ */
+.sectors-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border:1px solid var(--line);
+}
+.sector-card{
+  padding:2.5rem 1.75rem;
+  border-right:1px solid var(--line);
+  background:var(--white);
+  transition:background 0.15s;
+  position:relative;
+}
+.sector-card:last-child{border-right:none}
+.sector-card:hover{background:var(--black);color:var(--white)}
+.sector-card:hover .sector-num{color:var(--red)}
+.sector-card:hover h4{color:var(--white)}
+.sector-card:hover p{color:#A8A8A2}
+.sector-num{
+  font-weight:900;
+  font-size:0.85rem;
+  color:var(--red);letter-spacing:0.05em;
+  margin-bottom:1.25rem;
+}
+.sector-card h4{
+  font-weight:900;
+  font-size:1.1rem;
+  margin-bottom:0.5rem;letter-spacing:-0.01em;
+  color:var(--black);
+}
+.sector-card p{
+  font-size:0.85rem;color:var(--gray);
+  line-height:1.55;
+}
+
+/* ══ TESTIMONIAL ══════════════ */
+.testi-section{
+  background:var(--red);color:var(--white);
+  border-bottom:1px solid var(--line);
+}
+.testi-section .section-num{color:rgba(255,255,255,0.7)}
+.testi-quote{
+  font-weight:900;
+  font-size:clamp(1.75rem,3.5vw,2.75rem);
+  line-height:1.15;
+  letter-spacing:-0.025em;
+  color:var(--white);
+  max-width:24ch;
+  margin-bottom:3rem;
+}
+.testi-author{
+  display:flex;align-items:center;gap:1.25rem;
+  padding-top:2.5rem;
+  border-top:1px solid rgba(255,255,255,0.25);
+}
+.testi-avatar{
+  width:56px;height:56px;
+  background:var(--black);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--white);
+  font-weight:900;
+  font-size:1rem;
+  flex-shrink:0;
+}
+.testi-name{
+  font-weight:900;
+  font-size:1rem;color:var(--white);
+  letter-spacing:-0.005em;
+}
+.testi-role{
+  font-size:0.85rem;color:rgba(255,255,255,0.75);
+  margin-top:0.15rem;
+}
+
+/* ══ ABOUT ══════════════════ */
+.about{position:relative;overflow:hidden}
+.about-swiss{
+  position:absolute;
+  left:-8%;top:50%;transform:translateY(-50%);
+  width:50%;
+  opacity:0.04;
+  pointer-events:none;
+}
+.about-swiss svg{width:100%;height:auto}
+.about-grid{
+  display:grid;grid-template-columns:1fr 1.3fr;
+  gap:5rem;align-items:stretch;
+  position:relative;z-index:1;
+}
+.about-visual{
+  background:var(--black);
+  padding:3rem;
+  color:var(--white);
+  display:flex;flex-direction:column;justify-content:space-between;
+  min-height:400px;
+}
+.about-visual-eyebrow{
+  font-size:0.75rem;font-weight:700;
+  letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--red);
+}
+.about-visual-heading{
+  font-weight:900;
+  font-size:1.85rem;line-height:1.1;
+  letter-spacing:-0.02em;
+  color:var(--white);
+}
+.about-story p{
+  font-size:1rem;color:var(--gray);
+  line-height:1.7;margin-bottom:1.25rem;
+}
+.about-story p:last-child{margin-bottom:0}
+.about-story strong{color:var(--black);font-weight:900}
+
+/* ══ CONTACT FORM SECTION ══════ */
+.contact-section{background:var(--white)}
+.contact-grid{
+  display:grid;grid-template-columns:1fr 1.2fr;
+  gap:5rem;align-items:start;
+}
+.contact-left h2{
+  font-weight:900;
+  font-size:clamp(2rem,4vw,3.5rem);
+  line-height:1;letter-spacing:-0.03em;
+  margin-bottom:1.5rem;
+}
+.contact-left h2 .red{color:var(--red)}
+.contact-left p{
+  font-size:1rem;color:var(--gray);
+  line-height:1.65;
+  margin-bottom:2rem;
+  max-width:38ch;
+}
+.contact-info{
+  border-top:1px solid var(--line);
+  padding-top:2rem;
+}
+.contact-info-item{
+  display:grid;
+  grid-template-columns:120px 1fr;
+  gap:1rem;
+  padding:0.75rem 0;
+  border-bottom:1px solid #E5E5E5;
+}
+.contact-info-item:last-child{border-bottom:none}
+.contact-info-label{
+  font-size:0.75rem;font-weight:700;
+  color:var(--gray);
+  text-transform:uppercase;letter-spacing:0.1em;
+}
+.contact-info-value{
+  font-weight:700;
+  color:var(--black);
+  font-size:0.95rem;
+}
+.contact-form{
+  background:var(--black);color:var(--white);
+  padding:3rem;
+}
+.contact-form .form-label{color:var(--red);border-bottom-color:rgba(255,255,255,0.2)}
+.contact-form h3{
+  font-weight:900;
+  font-size:1.6rem;line-height:1.15;
+  letter-spacing:-0.02em;
+  margin-bottom:1rem;
+  color:var(--white);
+}
+.contact-form-sub{
+  font-size:0.9rem;color:#A8A8A2;
+  margin-bottom:2rem;line-height:1.55;
+}
+.contact-form .form-field label{color:var(--white)}
+.contact-form .form-field select,
+.contact-form .form-field input,
+.contact-form .form-field textarea{
+  background:var(--black);
+  color:var(--white);
+  border-color:#444;
+}
+.contact-form .form-field select:focus,
+.contact-form .form-field input:focus,
+.contact-form .form-field textarea:focus{
+  background:#1a1a17;
+  border-color:var(--red);
+}
+.contact-form .form-btn{background:var(--red)}
+.contact-form .form-btn:hover{background:var(--white);color:var(--black)}
+
+/* ══ FAQ ══════════════════════ */
+.faq-list{max-width:820px;margin:0 auto;border-top:1px solid var(--line)}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-item summary{
+  padding:1.75rem 0;
+  cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:2rem;
+  font-weight:900;
+  font-size:1.15rem;
+  color:var(--black);
+  list-style:none;
+  letter-spacing:-0.01em;
+}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-icon{
+  width:30px;height:30px;
+  border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--black);
+  font-size:1.1rem;font-weight:900;
+  flex-shrink:0;
+  transition:all 0.2s;
+}
+.faq-item[open] .faq-icon{
+  background:var(--red);border-color:var(--red);color:var(--white);
+}
+.faq-answer{
+  padding:0 0 1.75rem;
+  font-size:0.95rem;color:var(--gray);
+  line-height:1.65;
+  max-width:60ch;
+}
+
+/* ══ FINAL CTA ══════════════════ */
+.cta-final{
+  background:var(--black);
+  color:var(--white);
+  padding:7rem 3rem;
+  text-align:center;
+  border-bottom:none;
+}
+.cta-final h2{
+  font-weight:900;
+  font-size:clamp(2.5rem,5vw,4.5rem);
+  line-height:0.95;letter-spacing:-0.04em;
+  margin-bottom:1.5rem;
+  color:var(--white);
+  max-width:20ch;margin-left:auto;margin-right:auto;
+}
+.cta-final h2 .red{color:var(--red)}
+.cta-final p{
+  font-size:1.05rem;
+  color:#A8A8A2;
+  max-width:40ch;
+  margin:0 auto 2.5rem;
+  line-height:1.6;
+}
+.cta-final .btn-primary{
+  background:var(--red);color:var(--white);
+}
+.cta-final .btn-primary:hover{background:var(--white);color:var(--black)}
+
+/* ══ FOOTER ══════════════════ */
+footer{
+  background:var(--black);
+  color:#A8A8A2;
+  padding:3rem 3rem 2rem;
+  border-top:1px solid #333;
+}
+.foot-inner{
+  max-width:1300px;margin:0 auto;
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:3rem;
+  padding-bottom:3rem;
+  border-bottom:1px solid #333;
+}
+.foot-brand .logo{color:var(--white);font-size:1.15rem;margin-bottom:1rem}
+.foot-brand .logo .light{color:var(--gray-light)}
+.foot-brand p{
+  font-size:0.85rem;line-height:1.65;
+  max-width:32ch;
+}
+.foot-col h5{
+  font-size:0.72rem;font-weight:700;
+  color:var(--white);
+  letter-spacing:0.15em;text-transform:uppercase;
+  margin-bottom:1rem;
+}
+.foot-col a{
+  display:block;
+  font-size:0.85rem;color:#A8A8A2;
+  text-decoration:none;
+  padding:0.35rem 0;
+}
+.foot-col a:hover{color:var(--red)}
+.foot-bottom{
+  max-width:1300px;margin:0 auto;
+  padding-top:2rem;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:1rem;
+  font-size:0.78rem;
+  color:var(--gray-light);
+}
+
+/* ══ ANIMATIONS ══════════════ */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.hero-eyebrow,h1.hero-title,.hero-sub,.btn-primary,.hero-right{
+  animation:fadeUp 0.7s ease both;
+}
+h1.hero-title{animation-delay:0.1s}
+.hero-sub{animation-delay:0.2s}
+.btn-primary{animation-delay:0.3s}
+.hero-right{animation-delay:0.15s}
+
+/* ══ RESPONSIVE ══════════════ */
+@media(max-width:1000px){
+  .hero{grid-template-columns:1fr}
+  .hero-left{border-right:none;border-bottom:1px solid var(--line);padding:3rem 1.5rem}
+  .hero-right{padding:3rem 1.5rem}
+  .approach-grid,.about-grid,.contact-grid{grid-template-columns:1fr;gap:3rem}
+  .stats-grid,.phones-row,.sectors-grid{grid-template-columns:1fr}
+  .stat-item,.phone-cell,.sector-card{border-right:none;border-bottom:1px solid #333}
+  .painpoint .stat-item:last-child{border-bottom:none}
+  .sector-card{border-bottom:1px solid var(--line)}
+  .sector-card:last-child{border-bottom:none}
+  .foot-inner{grid-template-columns:1fr 1fr;gap:2rem}
+  .nav-right a:not(.nav-cta){display:none}
+  nav{padding:0.85rem 1.5rem}
+  section,.painpoint,.testi-section,.contact-section,.about{padding:4rem 1.5rem}
+  .cta-final{padding:5rem 1.5rem}
+}
+@media(max-width:600px){
+  .foot-inner{grid-template-columns:1fr}
+  .contact-info-item{grid-template-columns:1fr;gap:0.25rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="logo">stell<span class="light">en</span>schraube<span class="cross">+</span></div>
+  <div class="nav-right">
+    <a href="#how">So funktionierts</a>
+    <a href="#about">Über uns</a>
+    <a href="#contact" class="nav-cta">Anfragen</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-swiss">
+      <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#0A0A08" d="M120,220 L145,180 L180,175 L210,155 L245,145 L275,150 L295,135 L330,130 L365,145 L395,140 L420,155 L455,150 L485,140 L515,150 L545,145 L570,160 L600,175 L625,195 L655,215 L680,240 L695,270 L685,300 L665,325 L640,345 L610,360 L575,370 L540,375 L500,378 L465,375 L430,368 L395,355 L360,340 L325,325 L290,315 L255,310 L220,305 L190,295 L165,280 L145,260 L130,240 Z"/>
+      </svg>
+    </div>
+    <div class="hero-left-content">
+      <div class="hero-eyebrow">Für Betriebe, die auf Qualität setzen</div>
+      <h1 class="hero-title">Die Besten sind nicht auf der Suche, <span class="red">deshalb finden Sie dich.</span></h1>
+      <p class="hero-sub">Gute Handwerker suchen keine neue Stelle. Sie haben schon eine. Wir zeigen ihnen deine, wenn sie am Handy sind.</p>
+      <a href="#contact" class="btn-primary">
+        Jetzt anfragen
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-form">
+      <div class="form-label">Kostenlose Vorschau</div>
+      <h3>Wir bauen dir <span class="red">gratis</span> ein Bewerbungsformular.</h3>
+      <p class="hero-form-sub">Sag uns, welche Stelle du besetzen willst. Du bekommst per Mail eine fertige Vorschau.</p>
+
+      <div class="form-field">
+        <label>Deine Branche</label>
+        <select>
+          <option>Bitte wählen</option>
+          <option>Metallbau</option>
+          <option>Schreinerei</option>
+          <option>Elektro</option>
+          <option>Sanitär und Heizung</option>
+          <option>Mechanik</option>
+          <option>Maler und Gipser</option>
+          <option>Baugewerbe</option>
+          <option>Logistik</option>
+          <option>Andere</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label>Offene Stelle</label>
+        <input type="text" placeholder="z.B. Polymechaniker EFZ">
+      </div>
+
+      <div class="form-field">
+        <label>Deine E-Mail</label>
+        <input type="email" placeholder="deine@firma.ch">
+      </div>
+
+      <button class="form-btn">Vorschau anfragen</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MARQUEE ═══ -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span class="marquee-item">Bieli Maschinenbau</span>
+    <span class="marquee-sep">/</span>
+    <span class="marquee-item">Rüegg Holzbau</span>
+    <span class="marquee-sep">/</span>
+    <span class="marquee-item">Meier Sanitär</span>
+    <span class="marquee-sep">/</span>
+    <span class="marquee-item">Elektro Zbinden</span>
+    <span class="marquee-sep">/</span>
+    <span class="marquee-item">Metallbau Fässler</span>
+    <span class="marquee-sep">/</span>
+    <span class="marquee-item">Brunner Bau</span>
+    <span class="marquee-sep">/</span>
+    <span class="marquee-item">Bieli Maschinenbau</span>
+    <span class="marquee-sep">/</span>
+    <span class="marquee-item">Rüegg Holzbau</span>
+    <span class="marquee-sep">/</span>
+    <span class="marquee-item">Meier Sanitär</span>
+    <span class="marquee-sep">/</span>
+    <span class="marquee-item">Elektro Zbinden</span>
+    <span class="marquee-sep">/</span>
+    <span class="marquee-item">Metallbau Fässler</span>
+    <span class="marquee-sep">/</span>
+    <span class="marquee-item">Brunner Bau</span>
+    <span class="marquee-sep">/</span>
+  </div>
+</div>
+
+<!-- ═══ PAINPOINT ═══ -->
+<section class="painpoint">
+  <div class="inner">
+    <div class="section-num">01 / Das Problem</div>
+    <h2 class="section-h">Jobportale liefern <span class="red">immer weniger</span> gute Bewerber.</h2>
+    <p class="section-lead">Wer wirklich gut ist, sucht keine Stelle. Er hat schon eine. Diese Leute schauen nicht auf jobs.ch. Man muss sie anders erreichen.</p>
+
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-num">70<span class="red">%</span></div>
+        <div class="stat-desc">der besten Fachkräfte suchen nicht aktiv nach einer neuen Stelle.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3<span class="red">+</span></div>
+        <div class="stat-desc">Monate dauert es im Schnitt, bis eine Fachkraft-Stelle besetzt ist.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">40k<span class="red">+</span></div>
+        <div class="stat-desc">Franken Umsatzverlust pro Monat bei einer offenen Stelle.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ APPROACH ═══ -->
+<section>
+  <div class="inner">
+    <div class="section-num">02 / Der Ansatz</div>
+    <div class="approach-grid">
+      <div>
+        <h2 class="section-h">Wir finden die, <span class="red">die nicht suchen.</span></h2>
+        <p class="section-lead">Statt zu warten, bis sich jemand meldet, gehen wir dorthin, wo deine Zielgruppe wirklich Zeit verbringt: aufs Handy.</p>
+      </div>
+      <ul class="approach-list">
+        <li>
+          <div class="approach-num">01</div>
+          <div>
+            <div class="approach-title">Werbung auf Facebook und Instagram</div>
+            <div class="approach-text">Wir zeigen deine Stelle als Werbung dort, wo deine Zielgruppe unterwegs ist. Genau in deiner Region.</div>
+          </div>
+        </li>
+        <li>
+          <div class="approach-num">02</div>
+          <div>
+            <div class="approach-title">Kurzes Bewerbungsformular</div>
+            <div class="approach-text">Interessenten füllen 5 kurze Fragen am Handy aus. Kein Lebenslauf, kein Anschreiben. Nur was du brauchst.</div>
+          </div>
+        </li>
+        <li>
+          <div class="approach-num">03</div>
+          <div>
+            <div class="approach-title">Wir machen alles für dich</div>
+            <div class="approach-text">Du musst dich um nichts kümmern. Wir bauen alles auf und liefern dir die passenden Bewerber direkt aufs Handy.</div>
+          </div>
+        </li>
+        <li>
+          <div class="approach-num">04</div>
+          <div>
+            <div class="approach-title">Direkt auf WhatsApp</div>
+            <div class="approach-text">Wenn sich jemand qualifiziert, bekommst du eine WhatsApp mit allen Infos. Anrufen und Termin abmachen.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="how" id="how">
+  <div class="inner">
+    <div class="section-num">03 / So funktioniert es</div>
+    <h2 class="section-h">Drei Schritte. <span class="red">Fertig.</span></h2>
+    <p class="section-lead">Der Prozess ist so einfach wie möglich. Wir übernehmen das Komplizierte. Du bekommst nur die passenden Menschen.</p>
+
+    <div class="phones-row">
+      <div class="phone-cell">
+        <div class="phone-step-label">
+          <span class="phone-step-num">01</span>
+          <span class="phone-step-title">Werbung wird gezeigt</span>
+        </div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="fb-header">
+              <div class="fb-avatar">M</div>
+              <div>
+                <div class="fb-name">Müller Elektro AG</div>
+                <div class="fb-sub">Werbung · Zürich</div>
+              </div>
+            </div>
+            <div class="fb-headline">Elektromonteur EFZ gesucht</div>
+            <div class="fb-copy">Wir suchen dich. Bewirb dich direkt vom Handy aus.</div>
+            <div class="fb-image">STROM</div>
+            <div class="fb-cta">Jetzt bewerben</div>
+            <div class="fb-footer">
+              <span>♡ 24</span>
+              <span>💬 3</span>
+              <span>↗</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phone-cell">
+        <div class="phone-step-label">
+          <span class="phone-step-num">02</span>
+          <span class="phone-step-title">Kurzes Formular ausfüllen</span>
+        </div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="quiz-header">Frage 2 von 5</div>
+            <div class="quiz-progress"><div class="quiz-progress-fill"></div></div>
+            <div class="quiz-question">Wie viel Erfahrung bringst du mit?</div>
+            <div class="quiz-option">0 bis 2 Jahre</div>
+            <div class="quiz-option selected">3 bis 5 Jahre <span>✓</span></div>
+            <div class="quiz-option">5+ Jahre</div>
+            <div class="quiz-btn">Weiter</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phone-cell">
+        <div class="phone-step-label">
+          <span class="phone-step-num">03</span>
+          <span class="phone-step-title">Bewerber aufs Handy</span>
+        </div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen wa-screen">
+            <div class="wa-header">
+              <span>◀</span> WhatsApp
+            </div>
+            <div class="wa-time">Heute, 09:14</div>
+            <div class="wa-msg">
+              <div class="wa-msg-header">Neuer Bewerber</div>
+              <div class="wa-msg-content">
+                <strong>Marco R.</strong><br>
+                Elektromonteur EFZ<br>
+                4 Jahre Erfahrung<br>
+                Zürich Oerlikon
+              </div>
+              <div class="wa-divider"></div>
+              <div class="wa-meta">
+                Start: sofort<br>
+                079 123 45 67
+              </div>
+              <div class="wa-time-sent">09:14 ✓✓</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECTORS ═══ -->
+<section>
+  <div class="inner">
+    <div class="section-num">04 / Für wen</div>
+    <h2 class="section-h">Für Schweizer <span class="red">Handwerksbetriebe.</span></h2>
+    <p class="section-lead">Wir arbeiten mit Betrieben zwischen 5 und 30 Mitarbeitenden. Egal ob der Chef die Bewerbungen selber sichtet oder jemand aus dem Team dafür zuständig ist. Wenn die Zeit für lange Prozesse fehlt, helfen wir.</p>
+
+    <div class="sectors-grid">
+      <div class="sector-card">
+        <div class="sector-num">01</div>
+        <h4>Holz und Bau</h4>
+        <p>Schreiner, Zimmermann, Maler, Gipser, Bau</p>
+      </div>
+      <div class="sector-card">
+        <div class="sector-num">02</div>
+        <h4>Metall und Mechanik</h4>
+        <p>Metallbau, Schlosserei, Polymechanik, Maschinenbau</p>
+      </div>
+      <div class="sector-card">
+        <div class="sector-num">03</div>
+        <h4>Elektro und Sanitär</h4>
+        <p>Elektroinstallationen, Heizung, Lüftung, Klima</p>
+      </div>
+      <div class="sector-card">
+        <div class="sector-num">04</div>
+        <h4>Logistik und Betrieb</h4>
+        <p>Transport, Lager, Produktion, Werkzeugbau</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIAL ═══ -->
+<section class="testi-section">
+  <div class="inner-narrow">
+    <div class="section-num">05 / Kundenstimme</div>
+    <p class="testi-quote">"Es isch schwierig hützutag gueti Lüt finde. Mit Stellenschraube han ich ganz ohni Ufwand chönne us de Interessente ussueche. Sehr empfehlenswert."</p>
+    <div class="testi-author">
+      <div class="testi-avatar">BM</div>
+      <div>
+        <div class="testi-name">Bieli Maschinenbau</div>
+        <div class="testi-role">Gesucht: Polymechaniker EFZ</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section class="about" id="about">
+  <div class="about-swiss">
+    <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#0A0A08" d="M120,220 L145,180 L180,175 L210,155 L245,145 L275,150 L295,135 L330,130 L365,145 L395,140 L420,155 L455,150 L485,140 L515,150 L545,145 L570,160 L600,175 L625,195 L655,215 L680,240 L695,270 L685,300 L665,325 L640,345 L610,360 L575,370 L540,375 L500,378 L465,375 L430,368 L395,355 L360,340 L325,325 L290,315 L255,310 L220,305 L190,295 L165,280 L145,260 L130,240 Z"/>
+    </svg>
+  </div>
+
+  <div class="inner">
+    <div class="section-num">06 / Über uns</div>
+    <div class="about-grid">
+      <div class="about-visual">
+        <div class="about-visual-eyebrow">Aktiv in der ganzen Schweiz</div>
+        <div class="about-visual-heading">Zwei Gründer. Ein Auftrag: Das Handwerk digital stärken.</div>
+      </div>
+      <div class="about-story">
+        <p><strong>stellenschraube</strong> begann mit einer Bachelorarbeit. Im Auftrag einer grossen Schweizer Versicherung haben wir untersucht, wie es Handwerksbetrieben im Land wirklich geht.</p>
+        <p>Zwei Themen kamen dabei immer wieder auf: <strong>Die technologischen Hürden sind hoch.</strong> Viele Betriebe arbeiten mit veralteten Prozessen. Und: <strong>Der Fachkräftemangel ist das grösste Problem überhaupt.</strong></p>
+        <p>Aus dieser Erkenntnis wurde ein Produkt. Ein junges Team aus zwei Personen. Wir arbeiten mit Handwerksbetrieben bis 30 Mitarbeitende, die kein eigenes HR-Team haben. Ohne lange Prozesse. Ohne Beratersprache.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT FORM ═══ -->
+<section class="contact-section" id="contact">
+  <div class="inner">
+    <div class="section-num">07 / Kontakt</div>
+    <div class="contact-grid">
+      <div class="contact-left">
+        <h2>Schreib uns <span class="red">direkt.</span></h2>
+        <p>Sag uns kurz, wer du bist und was du suchst. Wir melden uns bei dir zurück.</p>
+
+        <div class="contact-info">
+          <div class="contact-info-item">
+            <div class="contact-info-label">E-Mail</div>
+            <div class="contact-info-value">info@stellenschraube.ch</div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-label">Standort</div>
+            <div class="contact-info-value">Schweiz</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <div class="form-label">Anfrage senden</div>
+        <h3>Kontaktiere uns.</h3>
+        <p class="contact-form-sub">Wir sind ein kleines Team. Deine Nachricht landet direkt bei uns.</p>
+
+        <div class="form-field">
+          <label>Name</label>
+          <input type="text" placeholder="Vor- und Nachname">
+        </div>
+
+        <div class="form-field">
+          <label>Firma</label>
+          <input type="text" placeholder="Name deiner Firma">
+        </div>
+
+        <div class="form-field">
+          <label>E-Mail</label>
+          <input type="email" placeholder="deine@firma.ch">
+        </div>
+
+        <div class="form-field">
+          <label>Telefon (optional)</label>
+          <input type="tel" placeholder="+41 79 XXX XX XX">
+        </div>
+
+        <div class="form-field">
+          <label>Nachricht</label>
+          <textarea placeholder="Worum gehts?"></textarea>
+        </div>
+
+        <button class="form-btn">Nachricht senden</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section>
+  <div class="inner-narrow">
+    <div class="section-num">08 / Häufige Fragen</div>
+    <h2 class="section-h" style="margin-bottom:3rem">Was Betriebe <span class="red">fragen.</span></h2>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Passt das für uns als kleiner Betrieb?<div class="faq-icon">+</div></summary>
+        <div class="faq-answer">Genau für euch ist stellenschraube gemacht. Wir arbeiten mit Handwerksbetrieben zwischen 5 und 30 Mitarbeitenden, egal ob mit oder ohne eigenes HR. Wenn ihr trotzdem gute Leute braucht und dafür keine Zeit oder Kapazität habt, seid ihr richtig bei uns.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Was kostet das ganze?<div class="faq-icon">+</div></summary>
+        <div class="faq-answer">Der Preis richtet sich nach deiner Branche, der Position und dem Umfang. Wir besprechen das transparent in einem ersten Gespräch. Die Vorschau bekommst du unverbindlich per Mail.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Muss ich technisch etwas können?<div class="faq-icon">+</div></summary>
+        <div class="faq-answer">Nein. Wir übernehmen alles. Du bekommst am Ende eine WhatsApp, wenn sich jemand qualifiziert hat. Alles andere läuft im Hintergrund.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Wer macht die Werbung auf Facebook und Instagram?<div class="faq-icon">+</div></summary>
+        <div class="faq-answer">Wir. Von der Erstellung bis zur Optimierung. Du musst weder einen Account erstellen noch dich mit Werbung beschäftigen.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Was passiert mit meinen Daten?<div class="faq-icon">+</div></summary>
+        <div class="faq-answer">Wir sind ein Schweizer Team und arbeiten nach dem revidierten Datenschutzgesetz (nDSG). Alle Bewerberdaten werden verschlüsselt in der Schweiz gespeichert.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Was, wenn niemand Passendes dabei ist?<div class="faq-icon">+</div></summary>
+        <div class="faq-answer">Das ist selten der Fall. Sollte es passieren, optimieren wir die Kampagne kostenfrei nach oder passen die Zielgruppe an. Ziel ist immer: Stelle besetzt.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FINAL CTA ═══ -->
+<section class="cta-final">
+  <h2>Bereit für <span class="red">bessere</span> Bewerbungen?</h2>
+  <p>Schreib uns eine Nachricht. Ohne Verpflichtung, ohne Verkaufsgespräch.</p>
+  <a href="#contact" class="btn-primary">
+    Jetzt anfragen
+    <span class="arrow">→</span>
+  </a>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <div class="logo">stell<span class="light">en</span>schraube<span class="cross">+</span></div>
+      <p>Wir finden Fachkräfte für Schweizer Handwerksbetriebe bis 30 Mitarbeitende dort, wo sie wirklich sind.</p>
+    </div>
+    <div class="foot-col">
+      <h5>Produkt</h5>
+      <a href="#how">So funktionierts</a>
+      <a href="#about">Über uns</a>
+      <a href="#contact">Kontakt</a>
+    </div>
+    <div class="foot-col">
+      <h5>Kontakt</h5>
+      <a href="mailto:info@stellenschraube.ch">info@stellenschraube.ch</a>
+    </div>
+    <div class="foot-col">
+      <h5>Rechtliches</h5>
+      <a href="#">Impressum</a>
+      <a href="#">Datenschutz</a>
+      <a href="#">AGB</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div>© 2025 stellenschraube. Alle Rechte vorbehalten.</div>
+    <div>Made in Switzerland</div>
+  </div>
+</footer>
+
+</body>
+</html>
