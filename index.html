@@ -382,40 +382,56 @@ h2.section-h .red{color:var(--red)}
 }
 
 /* Phone 1 Content */
-.fb-header{
-  display:flex;align-items:center;gap:0.5rem;
+.ig-header{
+  display:flex;align-items:center;gap:0.45rem;
   padding-bottom:0.5rem;
-  border-bottom:1px solid #E5E5E5;
 }
-.fb-avatar{
-  width:24px;height:24px;
-  background:var(--red);
+.ig-avatar{
+  width:26px;height:26px;flex-shrink:0;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--red),#F59E0B);
+  padding:2px;
   display:flex;align-items:center;justify-content:center;
-  font-size:0.6rem;color:var(--white);font-weight:900;
 }
-.fb-name{font-size:0.65rem;font-weight:700;color:var(--black)}
-.fb-sub{font-size:0.55rem;color:var(--gray)}
-.fb-headline{font-size:0.7rem;font-weight:700;color:var(--black);line-height:1.3}
-.fb-copy{font-size:0.6rem;color:var(--gray);line-height:1.4}
-.fb-image{
-  height:60px;
-  background:var(--black);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--red);font-size:1.5rem;font-weight:900;
-}
-.fb-cta{
+.ig-avatar span{
+  width:100%;height:100%;border-radius:50%;
   background:var(--black);color:var(--white);
-  padding:6px 8px;
-  text-align:center;
-  font-size:0.62rem;font-weight:700;
-  letter-spacing:0.05em;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.55rem;font-weight:900;
+}
+.ig-header-text{flex:1}
+.ig-username{font-size:0.6rem;font-weight:700;color:var(--black)}
+.ig-sponsored{font-size:0.5rem;color:var(--gray)}
+.ig-more{font-size:0.75rem;color:var(--black);letter-spacing:1px}
+.ig-image{
+  aspect-ratio:1/1;
+  margin:0 -0.85rem;
+  background:linear-gradient(150deg,#1C1C19,#0A0A08);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:0.5rem;
+}
+.ig-image-icon{font-size:1.9rem;color:var(--red)}
+.ig-image-tag{
+  font-size:0.5rem;font-weight:900;letter-spacing:0.08em;
+  color:var(--white);text-align:center;padding:0 1.2rem;
   text-transform:uppercase;
 }
-.fb-footer{
-  display:flex;justify-content:space-between;
-  padding-top:4px;
-  border-top:1px solid #E5E5E5;
-  font-size:0.55rem;color:var(--gray);
+.ig-actions{
+  display:flex;align-items:center;gap:0.5rem;
+  padding-top:0.5rem;
+  font-size:0.85rem;color:var(--black);
+}
+.ig-save{margin-left:auto}
+.ig-likes{font-size:0.58rem;font-weight:700;color:var(--black);margin-top:0.25rem}
+.ig-caption{font-size:0.58rem;color:var(--black);line-height:1.4;margin-top:0.15rem}
+.ig-caption strong{font-weight:700}
+.ig-cta{
+  margin-top:0.4rem;
+  border:1px solid #DBDBDB;
+  border-radius:6px;
+  text-align:center;
+  padding:0.4rem;
+  font-size:0.56rem;font-weight:700;color:var(--black);
 }
 
 /* Phone 2 Content */
@@ -454,43 +470,42 @@ h2.section-h .red{color:var(--red)}
 }
 
 /* Phone 3 Content */
-.wa-screen{background:#ECE5DD !important;gap:0.4rem !important;padding-top:0.5rem !important}
-.wa-header{
-  background:#075E54;color:#fff;
-  padding:0.4rem 0.6rem;
-  font-size:0.62rem;font-weight:700;
-  display:flex;align-items:center;gap:0.4rem;
-  margin:-1rem -0.85rem 0.5rem;
+.notif-screen{
+  justify-content:center;
 }
-.wa-time{
-  text-align:center;
-  font-size:0.55rem;color:#667781;
-  background:rgba(255,255,255,0.7);
-  padding:2px 6px;
-  align-self:center;
-}
-.wa-msg{
+.notif-banner{
   background:#fff;
-  padding:0.5rem;
-  max-width:90%;
-  align-self:flex-start;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:0.55rem 0.6rem;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+.notif-banner-row{
+  display:flex;align-items:flex-start;gap:0.35rem;
+  margin-bottom:0.3rem;
+}
+.notif-icon{
+  width:16px;height:16px;flex-shrink:0;
+  margin-top:1px;
+  border-radius:50%;
+  background:var(--red);color:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.6rem;font-weight:900;
+}
+.notif-app-name{
+  flex:1;
+  font-size:0.44rem;font-weight:700;color:var(--gray);
+  text-transform:uppercase;letter-spacing:0.03em;
+  line-height:1.3;
+}
+.notif-banner-time{font-size:0.5rem;color:var(--gray)}
+.notif-banner-title{
+  font-size:0.62rem;font-weight:900;color:var(--black);
+  margin-bottom:2px;
+}
+.notif-banner-text{
   font-size:0.58rem;color:var(--black);
   line-height:1.4;
-}
-.wa-msg-header{
-  font-size:0.5rem;font-weight:900;
-  color:var(--red);margin-bottom:3px;
-  letter-spacing:0.08em;text-transform:uppercase;
-}
-.wa-msg-content strong{color:var(--black);font-weight:700}
-.wa-divider{
-  height:1px;background:#E5E5E5;
-  margin:4px 0;
-}
-.wa-meta{font-size:0.5rem;color:var(--gray);line-height:1.4}
-.wa-time-sent{
-  font-size:0.5rem;color:var(--gray);
-  text-align:right;margin-top:2px;
 }
 
 /* ══ SECTORS ══════════════════ */
@@ -843,8 +858,8 @@ h1.hero-title{animation-delay:0.1s}
     </div>
     <div class="hero-left-content">
       <div class="hero-eyebrow">Für Betriebe, die auf Qualität setzen</div>
-      <h1 class="hero-title">Die Besten sind nicht auf der Suche, <span class="red">deshalb finden Sie dich.</span></h1>
-      <p class="hero-sub">Gute Handwerker suchen keine neue Stelle. Sie haben schon eine. Wir zeigen ihnen deine, wenn sie am Handy sind.</p>
+      <h1 class="hero-title">Wer gut ist, sucht nicht. <span class="red">Wir sorgen dafür, dass er dich trotzdem findet.</span></h1>
+      <p class="hero-sub">Kein Warten auf Bewerbungen. Wir spielen deine Stelle direkt aufs Handy, in seiner Region, in seiner Branche.</p>
       <a href="#contact" class="btn-primary">
         Jetzt anfragen
         <span class="arrow">→</span>
@@ -924,7 +939,7 @@ h1.hero-title{animation-delay:0.1s}
   <div class="inner">
     <div class="section-num">01 / Das Problem</div>
     <h2 class="section-h">Jobportale liefern <span class="red">immer weniger</span> gute Bewerber.</h2>
-    <p class="section-lead">Wer wirklich gut ist, sucht keine Stelle. Er hat schon eine. Diese Leute schauen nicht auf jobs.ch. Man muss sie anders erreichen.</p>
+    <p class="section-lead">Jobportale erreichen nur, wer aktiv sucht. Die Folge: Stellen bleiben monatelang offen und kosten dich jeden Tag Umsatz.</p>
 
     <div class="stats-grid">
       <div class="stat-item">
@@ -949,36 +964,36 @@ h1.hero-title{animation-delay:0.1s}
     <div class="section-num">02 / Der Ansatz</div>
     <div class="approach-grid">
       <div>
-        <h2 class="section-h">Wir finden die, <span class="red">die nicht suchen.</span></h2>
-        <p class="section-lead">Statt zu warten, bis sich jemand meldet, gehen wir dorthin, wo deine Zielgruppe wirklich Zeit verbringt: aufs Handy.</p>
+        <h2 class="section-h">Aktive Ansprache <span class="red">statt Warteschlange.</span></h2>
+        <p class="section-lead">Wir zeigen deine Stelle als Werbung – gezielt, regional, genau dort, wo deine Zielgruppe wirklich Zeit verbringt.</p>
       </div>
       <ul class="approach-list">
         <li>
           <div class="approach-num">01</div>
           <div>
             <div class="approach-title">Werbung auf Facebook und Instagram</div>
-            <div class="approach-text">Wir zeigen deine Stelle als Werbung dort, wo deine Zielgruppe unterwegs ist. Genau in deiner Region.</div>
+            <div class="approach-text">Zielgerichtete Anzeigen nach Branche, Region und Beruf – so sehen nur die passenden Leute deine Stelle.</div>
           </div>
         </li>
         <li>
           <div class="approach-num">02</div>
           <div>
             <div class="approach-title">Kurzes Bewerbungsformular</div>
-            <div class="approach-text">Interessenten füllen 5 kurze Fragen am Handy aus. Kein Lebenslauf, kein Anschreiben. Nur was du brauchst.</div>
+            <div class="approach-text">Interessenten füllen 5 kurze Fragen am Handy aus. Kein Lebenslauf, kein Anschreiben. Nur die Infos, die du brauchst.</div>
           </div>
         </li>
         <li>
           <div class="approach-num">03</div>
           <div>
-            <div class="approach-title">Wir machen alles für dich</div>
-            <div class="approach-text">Du musst dich um nichts kümmern. Wir bauen alles auf und liefern dir die passenden Bewerber direkt aufs Handy.</div>
+            <div class="approach-title">Wir übernehmen den gesamten Bewerbungsprozess</div>
+            <div class="approach-text">Du musst dich um nichts kümmern. Wir bauen alles auf und schicken dir passende Bewerber.</div>
           </div>
         </li>
         <li>
           <div class="approach-num">04</div>
           <div>
-            <div class="approach-title">Direkt auf WhatsApp</div>
-            <div class="approach-text">Wenn sich jemand qualifiziert, bekommst du eine WhatsApp mit allen Infos. Anrufen und Termin abmachen.</div>
+            <div class="approach-title">Sofort benachrichtigt</div>
+            <div class="approach-text">Wenn sich jemand qualifiziert, bekommst du sofort alle Infos. Anrufen und Termin abmachen.</div>
           </div>
         </li>
       </ul>
@@ -1002,22 +1017,27 @@ h1.hero-title{animation-delay:0.1s}
         <div class="phone">
           <div class="phone-notch"></div>
           <div class="phone-screen">
-            <div class="fb-header">
-              <div class="fb-avatar">M</div>
-              <div>
-                <div class="fb-name">Müller Elektro AG</div>
-                <div class="fb-sub">Werbung · Zürich</div>
+            <div class="ig-header">
+              <div class="ig-avatar"><span>M</span></div>
+              <div class="ig-header-text">
+                <div class="ig-username">mueller_elektro_ag</div>
+                <div class="ig-sponsored">Gesponsert</div>
               </div>
+              <div class="ig-more">•••</div>
             </div>
-            <div class="fb-headline">Elektromonteur EFZ gesucht</div>
-            <div class="fb-copy">Wir suchen dich. Bewirb dich direkt vom Handy aus.</div>
-            <div class="fb-image">STROM</div>
-            <div class="fb-cta">Jetzt bewerben</div>
-            <div class="fb-footer">
-              <span>♡ 24</span>
-              <span>💬 3</span>
-              <span>↗</span>
+            <div class="ig-image">
+              <div class="ig-image-icon">⚡</div>
+              <div class="ig-image-tag">Elektromonteur gesucht</div>
             </div>
+            <div class="ig-actions">
+              <span>♡</span>
+              <span>💬</span>
+              <span>➤</span>
+              <span class="ig-save">⌵</span>
+            </div>
+            <div class="ig-likes">24 Gefällt mir</div>
+            <div class="ig-caption"><strong>mueller_elektro_ag</strong> Wir suchen dich. Bewirb dich direkt vom Handy aus.</div>
+            <div class="ig-cta">Jetzt bewerben</div>
           </div>
         </div>
       </div>
@@ -1044,29 +1064,19 @@ h1.hero-title{animation-delay:0.1s}
       <div class="phone-cell">
         <div class="phone-step-label">
           <span class="phone-step-num">03</span>
-          <span class="phone-step-title">Bewerber aufs Handy</span>
+          <span class="phone-step-title">Direkte Benachrichtigung</span>
         </div>
         <div class="phone">
           <div class="phone-notch"></div>
-          <div class="phone-screen wa-screen">
-            <div class="wa-header">
-              <span>◀</span> WhatsApp
-            </div>
-            <div class="wa-time">Heute, 09:14</div>
-            <div class="wa-msg">
-              <div class="wa-msg-header">Neuer Bewerber</div>
-              <div class="wa-msg-content">
-                <strong>Marco R.</strong><br>
-                Elektromonteur EFZ<br>
-                4 Jahre Erfahrung<br>
-                Zürich Oerlikon
+          <div class="phone-screen notif-screen">
+            <div class="notif-banner">
+              <div class="notif-banner-row">
+                <span class="notif-icon">+</span>
+                <span class="notif-app-name">Nachricht von Stellenschraube</span>
+                <span class="notif-banner-time">jetzt</span>
               </div>
-              <div class="wa-divider"></div>
-              <div class="wa-meta">
-                Start: sofort<br>
-                079 123 45 67
-              </div>
-              <div class="wa-time-sent">09:14 ✓✓</div>
+              <div class="notif-banner-title">Neuer Bewerber</div>
+              <div class="notif-banner-text">Marco R. · Elektromonteur EFZ · 4 Jahre Erfahrung · Zürich Oerlikon</div>
             </div>
           </div>
         </div>
@@ -1135,12 +1145,12 @@ h1.hero-title{animation-delay:0.1s}
     <div class="about-grid">
       <div class="about-visual">
         <div class="about-visual-eyebrow">Aktiv in der ganzen Schweiz</div>
-        <div class="about-visual-heading">Zwei Gründer. Ein Auftrag: Das Handwerk digital stärken.</div>
+        <div class="about-visual-heading">Die Idee. Das Handwerk digital stärken.</div>
       </div>
       <div class="about-story">
         <p><strong>stellenschraube</strong> begann mit einer Bachelorarbeit. Im Auftrag einer grossen Schweizer Versicherung haben wir untersucht, wie es Handwerksbetrieben im Land wirklich geht.</p>
         <p>Zwei Themen kamen dabei immer wieder auf: <strong>Die technologischen Hürden sind hoch.</strong> Viele Betriebe arbeiten mit veralteten Prozessen. Und: <strong>Der Fachkräftemangel ist das grösste Problem überhaupt.</strong></p>
-        <p>Aus dieser Erkenntnis wurde ein Produkt. Ein junges Team aus zwei Personen. Wir arbeiten mit Handwerksbetrieben bis 30 Mitarbeitende, die kein eigenes HR-Team haben. Ohne lange Prozesse. Ohne Beratersprache.</p>
+        <p>Aus dieser Erkenntnis wurde ein Produkt. Ein junges Team aus zwei Personen. Wir arbeiten mit Handwerksbetrieben bis 30 Mitarbeitende, die keine eigene Personalabteilung haben. Ohne lange Prozesse. Ohne Beratersprache.</p>
       </div>
     </div>
   </div>
@@ -1211,16 +1221,16 @@ h1.hero-title{animation-delay:0.1s}
 
     <div class="faq-list">
       <details class="faq-item">
-        <summary>Passt das für uns als kleiner Betrieb?<div class="faq-icon">+</div></summary>
-        <div class="faq-answer">Genau für euch ist stellenschraube gemacht. Wir arbeiten mit Handwerksbetrieben zwischen 5 und 30 Mitarbeitenden, egal ob mit oder ohne eigenes HR. Wenn ihr trotzdem gute Leute braucht und dafür keine Zeit oder Kapazität habt, seid ihr richtig bei uns.</div>
+        <summary>Passt das für uns als kleinen Betrieb?<div class="faq-icon">+</div></summary>
+        <div class="faq-answer">Genau für euch ist stellenschraube gemacht. Wir arbeiten mit Handwerksbetrieben zwischen 5 und 30 Mitarbeitenden, egal ob mit oder ohne eigene Personalabteilung. Wenn ihr trotzdem gute Leute braucht und dafür keine Zeit oder Kapazität habt, seid ihr richtig bei uns.</div>
       </details>
       <details class="faq-item">
         <summary>Was kostet das ganze?<div class="faq-icon">+</div></summary>
         <div class="faq-answer">Der Preis richtet sich nach deiner Branche, der Position und dem Umfang. Wir besprechen das transparent in einem ersten Gespräch. Die Vorschau bekommst du unverbindlich per Mail.</div>
       </details>
       <details class="faq-item">
-        <summary>Muss ich technisch etwas können?<div class="faq-icon">+</div></summary>
-        <div class="faq-answer">Nein. Wir übernehmen alles. Du bekommst am Ende eine WhatsApp, wenn sich jemand qualifiziert hat. Alles andere läuft im Hintergrund.</div>
+        <summary>Brauche ich technisches Know-how?<div class="faq-icon">+</div></summary>
+        <div class="faq-answer">Nein. Wir übernehmen alles – von der Werbung bis zur Vorauswahl. Du wirst benachrichtigt, sobald sich jemand qualifiziert hat.</div>
       </details>
       <details class="faq-item">
         <summary>Wer macht die Werbung auf Facebook und Instagram?<div class="faq-icon">+</div></summary>
