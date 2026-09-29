@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>stellenschraube — Kostenlose Vorschau</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--white:#FAFAF7;--black:#0A0A08;--gray:#555;--gray-light:#8A8A82;--line:#0A0A08;--red:#DC2626}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--white);color:var(--black);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+nav{padding:1rem 1.5rem;border-bottom:1px solid var(--line)}
+.logo{font-weight:900;letter-spacing:-0.02em;display:inline-flex;align-items:center;font-size:1.15rem}
+.logo .light{color:var(--gray-light)}
+.logo .cross{display:inline-flex;align-items:center;justify-content:center;background:var(--red);color:var(--white);border-radius:50%;width:0.9em;height:0.9em;font-size:0.6em;margin-left:0.35em;line-height:1}
+main{flex:1;display:flex;justify-content:center;padding:3.5rem 1.5rem 4rem}
+.box{width:100%;max-width:480px}
+.form-label{font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--line)}
+h1{font-weight:900;font-size:clamp(1.8rem,6vw,2.3rem);line-height:1.05;letter-spacing:-0.03em;margin-bottom:1rem;text-wrap:balance}
+h1 .red{color:var(--red)}
+.sub{font-size:0.95rem;color:var(--gray);margin-bottom:2rem;max-width:44ch}
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
+.field .opt{color:var(--gray-light);font-weight:400;text-transform:none;letter-spacing:0}
+input{width:100%;padding:0.8rem 0.9rem;border:1px solid var(--line);font:inherit;font-size:0.95rem;background:var(--white);border-radius:0}
+input:focus{outline:none;background:#F0EEE8}
+input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.hint{font-size:0.78rem;color:var(--gray);margin-top:0.35rem}
+.btn{width:100%;margin-top:0.5rem;background:var(--black);color:var(--white);font:inherit;font-size:0.9rem;font-weight:700;padding:1rem;border:none;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;transition:background .2s;display:flex;justify-content:center;align-items:center;gap:0.6rem}
+.btn:hover{background:var(--red)}
+.btn:disabled{background:#333;cursor:wait}
+.spin{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:s .7s linear infinite;display:none}
+.btn:disabled .spin{display:block}
+@keyframes s{to{transform:rotate(360deg)}}
+.err{color:#991B1B;font-size:0.85rem;margin-top:0.75rem;min-height:1.2em}
+.done{display:none;border:1px solid var(--line)}
+.done.on{display:block}
+.done-head{background:var(--black);color:var(--white);padding:1.5rem}
+.done-head .form-label{color:var(--red);border-color:#333;margin-bottom:0.75rem}
+.done-head h2{font-weight:900;font-size:1.4rem;line-height:1.15;letter-spacing:-0.02em}
+.done-body{padding:1.5rem;display:flex;flex-direction:column;gap:0.75rem}
+.link{font-size:0.85rem;word-break:break-all;color:var(--gray);padding:0.75rem;background:#F0EEE8}
+.btns{display:flex;gap:0.5rem}
+.btns a,.btns button{flex:1;text-align:center;padding:0.85rem;font:inherit;font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;text-decoration:none;cursor:pointer;border:1px solid var(--line)}
+.btns a{background:var(--red);color:var(--white);border-color:var(--red)}
+.btns button{background:var(--white);color:var(--black)}
+.again{background:none;border:none;font:inherit;font-size:0.85rem;color:var(--gray);text-decoration:underline;cursor:pointer;align-self:flex-start}
+@media(prefers-reduced-motion:reduce){.spin{animation:none}}
+</style>
+</head>
+<body>
+<nav><div class="logo">stell<span class="light">en</span>schraube<span class="cross">+</span></div></nav>
+<main>
+  <div class="box">
+    <form id="f" novalidate>
+      <div class="form-label">Kostenlose Vorschau</div>
+      <h1>Wir bauen dir <span class="red">gratis</span> ein Bewerbungsformular.</h1>
+      <p class="sub">Gib deine Website oder den Link zu deinem Stelleninserat ein. Die Vorschau ist in wenigen Sekunden fertig.</p>
+
+      <div class="field">
+        <label for="url">Website oder Link zum Inserat</label>
+        <input id="url" name="url" inputmode="url" autocomplete="url" placeholder="www.deine-firma.ch" required>
+      </div>
+      <div class="field">
+        <label for="job">Offene Stelle <span class="opt">(optional)</span></label>
+        <input id="job" name="job" placeholder="z.B. Polymechaniker EFZ">
+        <div class="hint">Leer lassen, wenn der Link direkt aufs Inserat zeigt.</div>
+      </div>
+      <div class="field">
+        <label for="email">Deine E-Mail <span class="opt">(optional)</span></label>
+        <input id="email" name="email" type="email" autocomplete="email" placeholder="deine@firma.ch">
+        <div class="hint">Wir schicken dir den Link auch per Mail.</div>
+      </div>
+      <button class="btn" id="go" type="submit"><span class="spin"></span><span id="gotxt">Vorschau erstellen</span></button>
+      <div class="err" id="err" role="alert"></div>
+    </form>
+
+    <div class="done" id="done" role="status">
+      <div class="done-head">
+        <div class="form-label">Vorschau bereit</div>
+        <h2 id="done-title"></h2>
+      </div>
+      <div class="done-body">
+        <div class="link" id="link"></div>
+        <div class="btns">
+          <a id="open" href="#" target="_blank" rel="noopener">Vorschau öffnen</a>
+          <button type="button" id="copy">Link kopieren</button>
+        </div>
+        <button type="button" class="again" id="again">Weitere Stelle eingeben</button>
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+$('f').addEventListener('submit', async e => {
+  e.preventDefault();
+  const url = $('url').value.trim(), email = $('email').value.trim();
+  if (!/[\w-]+\.[a-z]{2,}/i.test(url)) { $('err').textContent = 'Bitte gib eine Website ein, z.B. www.deine-firma.ch'; return; }
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { $('err').textContent = 'Die E-Mail-Adresse sieht nicht vollständig aus.'; return; }
+  $('err').textContent = ''; $('go').disabled = true; $('gotxt').textContent = 'Vorschau wird gebaut …';
+  try {
+    const r = await fetch('/api/preview', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({input:url, job_title:$('job').value.trim(), email})});
+    const d = await r.json();
+    if (!r.ok) { $('err').textContent = d.error || 'Das hat nicht geklappt.'; if (d.field) $(d.field === 'job' ? 'job' : 'url').focus(); return; }
+    const link = location.origin + d.path;
+    $('done-title').textContent = d.job_title + ' bei ' + d.company_name;
+    $('link').textContent = link; $('open').href = link;
+    $('f').style.display = 'none'; $('done').classList.add('on');
+  } catch (err) {
+    $('err').textContent = 'Keine Verbindung. Prüf dein Internet und versuch es nochmal.';
+  } finally { $('go').disabled = false; $('gotxt').textContent = 'Vorschau erstellen'; }
+});
+$('copy').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText($('link').textContent); $('copy').textContent = 'Kopiert'; setTimeout(() => $('copy').textContent = 'Link kopieren', 1800); } catch(_) {}
+});
+$('again').addEventListener('click', () => { $('done').classList.remove('on'); $('f').style.display = ''; $('f').reset(); $('url').focus(); });
+</script>
+</body>
+</html>

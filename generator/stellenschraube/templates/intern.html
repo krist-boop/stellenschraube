@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>stellenschraube — Intern</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#FAFAF7;color:#0A0A08;font-size:14px;padding:2rem 1rem}
+.wrap{max-width:1000px;margin:0 auto}
+h1{font-weight:900;font-size:1.6rem;letter-spacing:-0.02em;margin-bottom:1.5rem}
+.scroll{overflow-x:auto;border:1px solid #0A0A08}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{text-align:left;padding:0.65rem 0.75rem;border-bottom:1px solid #E5E5E5;vertical-align:top}
+th{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:#555;background:#F0EEE8}
+td.num{font-variant-numeric:tabular-nums;text-align:right}
+.sw{display:inline-block;width:12px;height:12px;vertical-align:middle;margin-right:6px;border:1px solid #0003}
+.warn{color:#991B1B;font-size:0.78rem}
+a{color:#0A0A08}
+.muted{color:#8A8A82;font-size:0.78rem}
+</style>
+</head>
+<body><div class="wrap">
+<h1>Erstellte Formulare</h1>
+<div class="scroll"><table>
+<tr><th>Erstellt</th><th>Betrieb / Stelle</th><th>Quelle</th><th>Farbe</th><th>Fragen</th><th>Anfrage von</th><th>Bewerb.</th></tr>
+{% for r in rows %}
+<tr>
+  <td class="muted">{{ r.created|dt }}</td>
+  <td><a href="/employer/{{ r.slug }}" target="_blank">{{ r.data.company_name }}</a><br>{{ r.data.job_title }}
+    {% for w in r.data.warnings %}<div class="warn">{{ w }}</div>{% endfor %}</td>
+  <td class="muted">{{ r.source or '' }}</td>
+  <td><span class="sw" style="background:{{ r.data.brand.accent }}"></span>{{ r.data.brand.accent_source }}</td>
+  <td class="muted">{{ r.data.branch }} · {{ r.data.question_source }}</td>
+  <td class="muted">{{ r.requester_email or '' }}</td>
+  <td class="num">{% if r.n %}<a href="/intern/{{ r.slug }}">{{ r.n }}</a>{% else %}0{% endif %}</td>
+</tr>
+{% else %}<tr><td colspan="7" class="muted">Noch keine Formulare.</td></tr>{% endfor %}
+</table></div>
+</div></body></html>
