@@ -3,6 +3,21 @@
 Ein Betrieb gibt seine Website oder den Link zum Stelleninserat ein. Der Generator erstellt daraus ein
 Bewerbungsformular in Farbe und Logo des Betriebs, erreichbar unter `/employer/<firma>-<id>`.
 
+## Selbst testen in 5 Minuten
+```bash
+git clone https://github.com/krist-boop/stellenschraube && cd stellenschraube
+git checkout vorschau-generator && cd generator
+python3 -m venv venv && ./venv/bin/pip install -r requirements.txt
+./venv/bin/python app.py
+```
+1. http://localhost:5050/vorschau öffnen, eine Firmen-Website + Stelle + E-Mail eingeben (Fall A)
+2. http://localhost:5050/intern?key=dev öffnen: Anfrage steht auf «Wartet auf Freigabe»
+3. Anfrage anklicken → «Freigeben» → Mail-Text und Link erscheinen
+4. Link auf dem Handy oder im Browser öffnen und durchklicken
+5. Oben in der Übersicht «Neuer Akquise-Vorschlag» mit einem Inserat-Link ausprobieren (Fall B), «JPG herunterladen»
+
+Für KI-Assistenten: siehe [`AGENTS.md`](AGENTS.md).
+
 ## Zwei Fälle
 **Fall A – Anfrage:** Betrieb gibt auf `/vorschau` Website/Inserat, Stelle und E-Mail ein. Das Formular wird gebaut,
 bleibt aber gesperrt (Status «Wartet auf Freigabe»). Wir prüfen es in der Angebotsübersicht, geben frei und

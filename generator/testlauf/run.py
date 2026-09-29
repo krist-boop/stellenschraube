@@ -1,11 +1,17 @@
-"""Testlauf 2: Fall A (Anfrage mit Freigabe) und Fall B (Akquise). Jeder Schritt als Screenshot in testlauf/."""
-import json, re, time, urllib.request
+"""Testlauf: Fall A (Anfrage mit Freigabe) und Fall B (Akquise). Jeder Schritt als Screenshot in testlauf/.
+
+Voraussetzung: Server läuft (python app.py) mit frischer Datenbank, sonst greift der Duplikat-Schutz.
+Start:  ./venv/bin/python testlauf/run.py
+Braucht Internet (liest frutiger.com und burkhalter.ch) und Chrome oder `playwright install chromium`.
+"""
+import json, os, re, time, urllib.request
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 BASE = "http://localhost:5050"
 OUT = Path(__file__).parent
-LANDING = "file:///private/tmp/claude-501/-Users-kp/1526af4f-7ee7-46cb-89bb-e161b0257924/scratchpad/stellenschraube/index.html"
+# Landingpage aus dem Repo (liegt eine Ebene über generator/)
+LANDING = (Path(__file__).resolve().parents[2] / "index.html").as_uri()
 log, n = [], 1
 
 def shot(page, case, name, note, full=False):
@@ -33,7 +39,10 @@ def phone_walkthrough(ph, case, picks):
     shot(ph, case, "danke", "Bestätigung für den Bewerber")
 
 with sync_playwright() as p:
-    b = p.chromium.launch(channel="chrome", headless=True)
+    try:
+        b = p.chromium.launch(channel=os.getenv("PLAYWRIGHT_CHANNEL") or "chrome", headless=True)
+    except Exception:
+        b = p.chromium.launch(headless=True)  # Chromium aus `playwright install chromium`
     betrieb = b.new_page(viewport={"width": 1280, "height": 800})                     # der anfragende Betrieb
     wir = b.new_context(viewport={"width": 1280, "height": 900}).new_page()             # wir, intern
     mobile = dict(viewport={"width": 390, "height": 844}, device_scale_factor=2, is_mobile=True, has_touch=True)
@@ -100,7 +109,6 @@ with sync_playwright() as p:
     shot(wir, "A+B", "uebersicht-final", "Angebotsübersicht: beide Fälle an einem Ort, mit Status und Unterseite")
     b.close()
 
-forms = json.load(urllib.request.urlopen(f"{BASE}/health"))
 (OUT / "log.json").write_text(json.dumps({"slug_a": slug_a, "slug_b": slug_b, "dauer_a": round(dauer_a, 1),
     "dauer_b": round(dauer_b, 1), "steps": log}, ensure_ascii=False, indent=1))
 print("fertig", slug_a, slug_b)
