@@ -43,8 +43,8 @@ def slugify(name):
 
 
 def new_slug(company_name):
-    # 4 Zeichen wie im Repo (torre-baden-8f3k) – nicht erratbar, aber kurz
-    return f"{slugify(company_name)}-{secrets.token_hex(2)}"
+    # 6 Zeichen (16 Mio. Möglichkeiten): Links lassen sich nicht durchprobieren
+    return f"{slugify(company_name)}-{secrets.token_hex(3)}"
 
 
 def save_form(form, requester_email=None, source=None):

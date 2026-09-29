@@ -132,10 +132,13 @@ def test_ganzer_ablauf(monkeypatch):
 
     r = c.post("/api/preview", json={"input": "Schreinerei Sutter AG sucht Schreiner EFZ 100%", "email": "chef@sutter.ch"})
     d = r.get_json()
-    assert r.status_code == 200 and re.fullmatch(r"/employer/schreinerei-sutter-[0-9a-f]{4}", d["path"])
+    assert r.status_code == 200 and re.fullmatch(r"/employer/schreinerei-sutter-[0-9a-f]{6}", d["path"])
     assert d["job_title"] == "Schreiner EFZ"
 
-    page = c.get(d["path"]).get_data(as_text=True)
+    resp = c.get(d["path"])
+    assert resp.headers["X-Robots-Tag"] == "noindex, nofollow"
+    page = resp.get_data(as_text=True)
+    assert 'name="robots" content="noindex, nofollow"' in page
     assert "Schreiner EFZ gesucht." in page and "stellenschraube" not in page.lower()
     assert page.count('class="step"') == 5  # 4 Fragen + Kontakt
 

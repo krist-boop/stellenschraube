@@ -81,7 +81,7 @@ def create_app():
             return jsonify(error=f"Wir konnten {form['source_url'] or raw} nicht öffnen. Stimmt die Adresse?",
                            field="url"), 422
         if "Stelle nicht erkannt" in form["warnings"]:
-            return jsonify(error="Welche Stelle willst du besetzen? Trag sie unten ein.", field="job"), 422
+            return jsonify(error="Welche Stelle willst du besetzen? Trag sie bei «Offene Stelle» ein.", field="job"), 422
         email = str(d.get("email") or "").strip()[:200] or None
         slug = store.save_form(form, requester_email=email, source=form["source_url"] or "text")
         # TODO: Mail mit dem Link an `email` schicken, sobald ein Mail-Dienst gewählt ist
@@ -94,7 +94,10 @@ def create_app():
         f = store.get_form(slug)
         if not f:
             abort(404)
-        return render_template("employer.html", f=f)
+        resp = app.make_response(render_template("employer.html", f=f))
+        # Doppelt abgesichert: meta robots im HTML und Header (greift auch für Crawler ohne HTML-Auswertung)
+        resp.headers["X-Robots-Tag"] = "noindex, nofollow"
+        return resp
 
     @app.post("/api/apply/<slug>")
     def apply(slug):
