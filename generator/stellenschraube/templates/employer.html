@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>{{ f.job_title }} gesucht — {{ f.company_name }}</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --white:#FAFAF7;--black:#0A0A08;--gray:#555;--gray-light:#8A8A82;--line:#0A0A08;
+  --accent:{{ f.brand.accent }};--on-accent:{{ f.brand.on_accent }};
+}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--white);color:var(--black);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.topbar{padding:1rem 1.5rem;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.logo{font-weight:900;letter-spacing:-0.02em;font-size:1rem;display:flex;align-items:center;min-width:0}
+.logo img{height:34px;width:auto;max-width:160px;object-fit:contain;object-position:left center;flex-shrink:0}
+.topbar-tag{font-size:0.72rem;font-weight:700;color:var(--gray);letter-spacing:0.08em;text-transform:uppercase;flex-shrink:0}
+.wrap{max-width:520px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+.job-eyebrow{font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+h1{font-weight:900;font-size:clamp(1.9rem,7vw,2.5rem);line-height:1.02;letter-spacing:-0.03em;margin-bottom:1.25rem;text-wrap:balance;overflow-wrap:anywhere}
+.job-sub{font-size:0.98rem;color:var(--gray);line-height:1.6;margin-bottom:1.75rem}
+.job-meta{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:2rem}
+.job-meta-item{display:grid;grid-template-columns:110px 1fr;gap:1rem;padding:0.85rem 0;border-bottom:1px solid #E5E5E5}
+.job-meta-item:last-child{border-bottom:none}
+.job-meta-label{font-size:0.72rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em}
+.job-meta-value{font-weight:700;font-size:0.92rem}
+.form-card{background:var(--black);color:var(--white);padding:1.75rem 1.5rem 2rem}
+.track{height:3px;background:#333;margin-bottom:1.5rem}
+.fill{height:100%;background:var(--accent);transition:width .3s ease}
+.form-label{font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:0.75rem;filter:brightness(1.25)}
+.count{font-size:0.78rem;color:#A8A8A2;margin-bottom:0.4rem}
+.step h2{font-weight:900;font-size:1.35rem;line-height:1.15;letter-spacing:-0.02em;margin-bottom:1.25rem}
+.step[hidden]{display:none}
+.opts{display:flex;flex-direction:column;gap:0.5rem}
+.opt{border:1px solid #444;background:transparent;color:#ddd;padding:0.8rem 0.9rem;font:inherit;font-size:0.92rem;text-align:left;cursor:pointer;display:flex;align-items:center;gap:0.65rem;transition:border-color .15s,color .15s}
+.opt::before{content:"";width:14px;height:14px;border:1.5px solid #666;border-radius:50%;flex-shrink:0}
+.opt:hover{border-color:#888}
+.opt[aria-pressed="true"]{border-color:var(--accent);color:#fff;font-weight:700}
+.opt[aria-pressed="true"]::before{border-color:var(--accent);background:var(--accent);box-shadow:inset 0 0 0 3px var(--black)}
+.multi .opt::before{border-radius:2px}
+.multi .opt[aria-pressed="true"]::before{content:"✓";color:var(--on-accent);font-size:11px;font-weight:900;line-height:14px;text-align:center;box-shadow:none}
+.hint{font-size:0.8rem;color:#A8A8A2;margin:-0.75rem 0 1rem}
+.opt:focus-visible,.btn:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.other{margin-top:0.5rem}
+.other[hidden]{display:none}
+.field{margin-bottom:1.1rem}
+.field label{display:block;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.4rem}
+input,textarea{width:100%;padding:0.85rem 0.9rem;border:1px solid #444;font:inherit;font-size:0.95rem;color:#fff;background:var(--black);border-radius:0}
+textarea{resize:vertical;min-height:80px}
+input:focus,textarea:focus{outline:none;border-color:var(--accent);background:#1a1a17}
+.row{display:flex;gap:0.75rem;margin-top:1.25rem}
+.btn{flex:1;padding:1rem;border:none;font:inherit;font-size:0.9rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;cursor:pointer;transition:opacity .15s}
+.btn-next{background:var(--accent);color:var(--on-accent)}
+.btn-next:disabled{opacity:.35;cursor:not-allowed}
+.btn-back{flex:0 0 auto;background:transparent;color:#A8A8A2;border:1px solid #444;padding:1rem 1.1rem}
+.btn-back[hidden]{display:none}
+.note{font-size:0.75rem;color:#8A8A82;margin-top:1rem;text-align:center;line-height:1.5}
+.err{font-size:0.8rem;color:#fca5a5;margin-top:0.5rem;min-height:1em}
+.success{display:none;text-align:center;padding:3rem 1.5rem;background:var(--black);color:var(--white)}
+.success.on{display:block}
+.success-icon{width:56px;height:56px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;margin:0 auto 1.5rem}
+.success h2{font-weight:900;font-size:1.5rem;margin-bottom:0.75rem}
+.success p{color:#A8A8A2;font-size:0.92rem;max-width:34ch;margin:0 auto;line-height:1.6}
+.mini-footer{text-align:center;padding:2rem 1.5rem;font-size:0.75rem;color:var(--gray-light);border-top:1px solid #E5E5E5}
+@media(max-width:400px){.job-meta-item{grid-template-columns:1fr;gap:0.15rem}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">{% if f.brand.logo_url %}<img src="{{ f.brand.logo_url }}" alt="{{ f.company_name }}" onerror="this.replaceWith(document.createTextNode(this.alt))">{% else %}{{ f.company_name }}{% endif %}</div>
+  <div class="topbar-tag">Bewerbung</div>
+</div>
+
+<main class="wrap">
+  <div class="job-eyebrow">{{ f.company_name }}{% if f.location %} · {{ f.location }}{% endif %}</div>
+  <h1>{{ f.base_title }} gesucht.</h1>
+  <p class="job-sub">Bewirb dich in unter 2 Minuten direkt vom Handy aus. Ohne Lebenslauf, ohne Anschreiben.</p>
+
+  <div class="job-meta">
+    <div class="job-meta-item"><div class="job-meta-label">Position</div><div class="job-meta-value">{{ f.job_title }}</div></div>
+    {% if f.location %}<div class="job-meta-item"><div class="job-meta-label">Standort</div><div class="job-meta-value">{{ f.location }}</div></div>{% endif %}
+    <div class="job-meta-item"><div class="job-meta-label">Start</div><div class="job-meta-value">Nach Vereinbarung</div></div>
+  </div>
+
+  <form class="form-card" id="form" novalidate>
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div class="form-label">Kurzbewerbung</div>
+    <div class="count" id="count" aria-live="polite"></div>
+
+    {% for q in f.questions %}
+    <fieldset class="step" data-i="{{ loop.index0 }}"{% if q.multi %} data-multi{% endif %} hidden style="border:0">
+      <legend><h2>{{ q.question }}</h2></legend>
+      {% if q.hint %}<p class="hint">{{ q.hint }}</p>{% endif %}
+      <div class="opts{% if q.multi %} multi{% endif %}">
+        {% for o in q.options %}<button type="button" class="opt" aria-pressed="false" data-v="{{ o }}">{{ o }}</button>{% endfor %}
+        <button type="button" class="opt" aria-pressed="false" data-other>Anderes …</button>
+      </div>
+      <div class="other" hidden><textarea aria-label="Deine Antwort" placeholder="Schreib kurz, was auf dich zutrifft"></textarea></div>
+    </fieldset>
+    {% endfor %}
+
+    <fieldset class="step" data-i="{{ f.questions|length }}" data-contact hidden style="border:0">
+      <legend><h2>Wie erreichen wir dich?</h2></legend>
+      <div class="field"><label for="name">Vor- und Nachname</label><input id="name" name="name" autocomplete="name" required></div>
+      <div class="field"><label for="tel">Telefon</label><input id="tel" name="telefon" type="tel" autocomplete="tel" placeholder="079 123 45 67" required></div>
+      <div class="field"><label for="email">E-Mail (optional)</label><input id="email" name="email" type="email" autocomplete="email" placeholder="name@beispiel.ch"></div>
+    </fieldset>
+
+    <div class="err" id="err" role="alert"></div>
+    <div class="row">
+      <button type="button" class="btn btn-back" id="back" hidden>Zurück</button>
+      <button type="submit" class="btn btn-next" id="next" disabled>Weiter</button>
+    </div>
+    <div class="note">Deine Angaben gehen nur an {{ f.company_name }} und werden vertraulich behandelt.</div>
+  </form>
+
+  <div class="success" id="success" role="status">
+    <div class="success-icon">✓</div>
+    <h2>Danke, <span id="sname"></span>.</h2>
+    <p>{{ f.company_name }} meldet sich innert 2 Werktagen bei dir. Halte dein Telefon bereit.</p>
+  </div>
+</main>
+
+<div class="mini-footer">{{ f.company_name }}</div>
+
+<script>
+(function(){
+  const SLUG = {{ f.slug|tojson }};
+  const QUESTIONS = {{ f.questions|tojson }};
+  const steps = [...document.querySelectorAll('.step')];
+  const total = steps.length;
+  const answers = Array(QUESTIONS.length).fill(null);
+  let cur = 0;
+  const $ = id => document.getElementById(id);
+
+  function valid(){
+    const s = steps[cur];
+    if (s.dataset.contact !== undefined){
+      const tel = $('tel').value.replace(/[^\d+]/g,'');
+      const mail = $('email').value.trim();
+      return $('name').value.trim().length > 1 && tel.length >= 9 && (!mail || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail));
+    }
+    return !!(answers[cur] && answers[cur].trim().length > 1);
+  }
+  function render(){
+    steps.forEach((s,i) => s.hidden = i !== cur);
+    $('fill').style.width = ((cur+1)/total*100) + '%';
+    $('count').textContent = 'Frage ' + (cur+1) + ' von ' + total;
+    $('back').hidden = cur === 0;
+    $('next').textContent = cur === total-1 ? 'Bewerbung senden' : 'Weiter';
+    $('next').disabled = !valid();
+    $('err').textContent = '';
+  }
+  steps.forEach((s,i) => {
+    const other = s.querySelector('.other'), ta = other && other.querySelector('textarea');
+    const multi = s.dataset.multi !== undefined;
+    const collect = () => {
+      // Mehrfachauswahl: alle gewählten Antworten plus Freitext zu einer Antwort zusammenfassen
+      const picked = [...s.querySelectorAll('.opt[aria-pressed="true"]')];
+      const parts = picked.filter(b => b.dataset.other === undefined).map(b => b.dataset.v);
+      if (picked.some(b => b.dataset.other !== undefined) && ta.value.trim()) parts.push(ta.value.trim());
+      answers[i] = parts.join('; ');
+    };
+    s.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
+      const isOther = b.dataset.other !== undefined;
+      if (multi) {
+        b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+        other.hidden = s.querySelector('[data-other]').getAttribute('aria-pressed') !== 'true';
+        if (isOther && !other.hidden) ta.focus();
+        collect();
+      } else {
+        s.querySelectorAll('.opt').forEach(x => x.setAttribute('aria-pressed','false'));
+        b.setAttribute('aria-pressed','true');
+        if (isOther){ other.hidden = false; answers[i] = ta.value; ta.focus(); }
+        else { other.hidden = true; answers[i] = b.dataset.v; }
+      }
+      render();
+    }));
+    if (ta) ta.addEventListener('input', () => { if (multi) collect(); else answers[i] = ta.value; render(); });
+  });
+  ['name','tel','email'].forEach(id => $(id).addEventListener('input', render));
+  $('back').addEventListener('click', () => { cur--; render(); });
+  $('form').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!valid()) return;
+    if (cur < total-1){ cur++; render(); return; }
+    $('next').disabled = true; $('next').textContent = 'Wird gesendet …';
+    const payload = { name:$('name').value.trim(), telefon:$('tel').value.trim(), email:$('email').value.trim(),
+      antworten: QUESTIONS.map((q,i) => ({frage:q.question, antwort:answers[i]})) };
+    try {
+      const r = await fetch('/api/apply/' + encodeURIComponent(SLUG), {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+      if (!r.ok) throw new Error();
+      $('sname').textContent = payload.name.split(' ')[0];
+      $('form').style.display = 'none';
+      $('success').classList.add('on');
+    } catch(_) {
+      $('err').textContent = 'Senden hat nicht geklappt. Prüf deine Verbindung und versuch es nochmal.';
+      $('next').disabled = false; $('next').textContent = 'Bewerbung senden';
+    }
+  });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>{{ r.data.company_name }} — Angebotsübersicht</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#FAFAF7;--ink:#0A0A08;--muted:#555;--faint:#8A8A82;--hair:#E3E1DA;--red:#DC2626;
+      --wait:#B45309;--sent:#1D4ED8;--acq:#7C3AED;--live:#15803D}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5}
+nav{padding:1rem 1.5rem;border-bottom:1px solid var(--ink)}
+nav a{color:var(--ink);font-weight:700;text-decoration:none}
+.wrap{max-width:1200px;margin:0 auto;padding:2rem 16px 4rem;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:2rem}
+.full{grid-column:1/-1}
+h1{font-weight:900;font-size:1.9rem;letter-spacing:-0.03em;line-height:1.1;text-wrap:balance}
+h2{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);padding:0.8rem 1rem;border-bottom:1px solid var(--hair)}
+.card{border:1px solid var(--ink);background:#fff}
+.body{padding:1rem;display:flex;flex-direction:column;gap:0.75rem}
+.pill{display:inline-block;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:0.2rem 0.5rem;border:1px solid currentColor}
+.s-wartet{color:var(--wait)}.s-freigegeben{color:var(--sent)}.s-akquise{color:var(--acq)}.s-live{color:var(--live)}
+.row{display:grid;grid-template-columns:130px minmax(0,1fr);gap:0.75rem;padding:0.45rem 0;border-bottom:1px solid var(--hair)}
+.row:last-child{border-bottom:none}
+.row span:first-child{color:var(--muted)}
+.link{background:#F0EEE8;padding:0.6rem 0.75rem;word-break:break-all;font-size:0.85rem}
+.btns{display:flex;flex-wrap:wrap;gap:0.5rem}
+button,.btn{font:inherit;font-weight:700;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.05em;padding:0.7rem 1rem;
+  border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.ghost,button.ghost{background:#fff;color:var(--ink)}
+button:hover,.btn:hover{background:var(--red);border-color:var(--red);color:#fff}
+pre{white-space:pre-wrap;font:inherit;font-size:0.88rem;background:#F0EEE8;padding:0.9rem;max-height:340px;overflow:auto}
+.note{font-size:0.8rem;color:var(--muted)}
+ol{padding-left:1.2rem;display:flex;flex-direction:column;gap:0.6rem}
+.opts{color:var(--muted);font-size:0.82rem}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:640px}
+th,td{text-align:left;padding:0.6rem 0.75rem;border-bottom:1px solid var(--hair);vertical-align:top;font-size:0.85rem}
+th{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)}
+.test{color:var(--faint)}
+.tag{font-size:0.66rem;font-weight:700;text-transform:uppercase;border:1px solid currentColor;padding:0.05rem 0.35rem;margin-left:0.3rem}
+a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+@media(max-width:860px){.wrap{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav><a href="/intern">← Angebotsübersicht</a></nav>
+<main class="wrap">
+  <div class="full">
+    <span class="pill s-{{ r.status }}">{{ STATUS_LABEL[r.status] }}</span>
+    <h1 style="margin-top:0.6rem">{{ r.data.company_name }} · {{ r.data.base_title }}</h1>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:2rem">
+    <section class="card">
+      <h2>Nächster Schritt</h2>
+      <div class="body">
+        {% if r.status == "wartet" %}
+          <p>Vorschau prüfen. Wenn sie passt: freigeben und die Mail an den Lead schicken.</p>
+        {% elif r.status == "akquise" %}
+          <p>Vorschlag an den Betrieb: am besten zuerst anrufen, dann die Mail «wie besprochen» schicken. Das JPG passt für LinkedIn, Brief oder die zweite Mail.</p>
+        {% elif r.status == "freigegeben" %}
+          <p>Vorschau ist verschickt. Nachfassen, und wenn der Betrieb zusagt: live schalten.</p>
+        {% else %}
+          <p>Werbung läuft. Neue Bewerbungen erscheinen unten.</p>
+        {% endif %}
+        <div class="link" id="link">{{ link }}</div>
+        <div class="btns">
+          <a class="btn ghost" href="/employer/{{ r.slug }}" target="_blank">Unterseite ansehen ↗</a>
+          <a class="btn ghost" href="/intern/{{ r.slug }}/vorschau.jpg">JPG herunterladen</a>
+          {% if r.status == "wartet" %}
+          <form method="post" action="/intern/{{ r.slug }}/status"><input type="hidden" name="status" value="freigegeben">
+            <button type="submit">Freigeben</button></form>
+          {% endif %}
+          {% if r.status in ("freigegeben", "akquise") %}
+          <form method="post" action="/intern/{{ r.slug }}/status"><input type="hidden" name="status" value="live">
+            <button type="submit">Kunde · live schalten</button></form>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    {% if r.status != "wartet" and r.lead.email %}
+    <section class="card">
+      <h2>Mail an {{ r.lead.email }}</h2>
+      <div class="body">
+        <div class="row"><span>Betreff</span><span>{{ subject }}</span></div>
+        <pre>{{ body }}</pre>
+        <div class="btns"><a class="btn" href="{{ mailto }}">In Mailprogramm öffnen</a>
+          <button type="button" class="ghost" id="copy">Text kopieren</button></div>
+        <p class="note">Bewusst schlicht: kein Anhang, keine Bilder, ein Link, klare Absage-Möglichkeit.</p>
+      </div>
+    </section>
+    {% elif r.status != "wartet" %}
+    <section class="card"><h2>Mail</h2><div class="body"><pre>{{ body }}</pre>
+      <p class="note">Keine E-Mail hinterlegt. Text kopieren und an die Adresse aus dem Impressum schicken.</p></div></section>
+    {% endif %}
+
+    <section class="card">
+      <h2>Bewerbungen ({{ apps|length }})</h2>
+      <div class="body scroll">
+        {% if apps %}
+        <table>
+          <tr><th>Eingang</th><th>Name / Telefon</th>{% for q in r.data.questions %}<th>{{ q.eyebrow }}</th>{% endfor %}</tr>
+          {% for a in apps %}
+          <tr class="{{ 'test' if a.test }}">
+            <td>{{ a.created|dt }}{% if a.test %}<span class="tag">Test</span>{% endif %}</td>
+            <td>{{ a.name }}<br>{{ a.telefon }}</td>
+            {% for x in a.antworten %}<td>{{ x.antwort }}</td>{% endfor %}
+          </tr>
+          {% endfor %}
+        </table>
+        <p class="note">«Test» = eingegangen, bevor die Seite live war (z.B. der Betrieb hat sich selbst durchgeklickt).</p>
+        {% else %}<p class="note">Noch keine Bewerbungen.</p>{% endif %}
+      </div>
+    </section>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:2rem">
+    <section class="card">
+      <h2>Erkannt</h2>
+      <div class="body">
+        <div>
+          <div class="row"><span>Betrieb</span><span>{{ r.data.company_name }}</span></div>
+          <div class="row"><span>Stelle</span><span>{{ r.data.job_title }}</span></div>
+          {% if r.data.location %}<div class="row"><span>Ort</span><span>{{ r.data.location }}</span></div>{% endif %}
+          <div class="row"><span>Quelle</span><span style="word-break:break-all">{{ r.source }}</span></div>
+          <div class="row"><span>Farbe</span><span><span style="display:inline-block;width:12px;height:12px;vertical-align:-1px;background:{{ r.data.brand.accent }}"></span> {{ r.data.brand.accent }} ({{ r.data.brand.accent_source }})</span></div>
+          <div class="row"><span>Logo</span><span>{{ 'ja' if r.data.brand.logo_url else 'nein – Firmenname als Text' }}</span></div>
+          <div class="row"><span>Lead</span><span>{{ r.lead.name or '–' }}{% if r.lead.email %} · {{ r.lead.email }}{% endif %}{% if r.lead.telefon %} · {{ r.lead.telefon }}{% endif %}</span></div>
+        </div>
+      </div>
+    </section>
+    <section class="card">
+      <h2>Fragen ({{ r.data.question_source }})</h2>
+      <div class="body">
+        <ol>{% for q in r.data.questions %}
+          <li><strong>{{ q.question }}</strong>{% if q.multi %} <span class="tag">Mehrfach</span>{% endif %}<div class="opts">{{ q.options|join(" · ") }}</div></li>
+        {% endfor %}</ol>
+      </div>
+    </section>
+  </div>
+</main>
+<script>
+const b = document.getElementById('copy');
+if (b) b.addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText({{ ("Betreff: " ~ subject ~ "\n\n" ~ body)|tojson }}); b.textContent = 'Kopiert'; } catch(_) {}
+});
+</script>
+</body>
+</html>

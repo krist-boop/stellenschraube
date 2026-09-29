@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Angebotsübersicht — stellenschraube</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#FAFAF7;--ink:#0A0A08;--muted:#555;--faint:#8A8A82;--hair:#E3E1DA;--red:#DC2626;
+      --wait:#B45309;--sent:#1D4ED8;--acq:#7C3AED;--live:#15803D}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5}
+nav{padding:1rem 1.5rem;border-bottom:1px solid var(--ink);display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:900;letter-spacing:-0.02em;font-size:1.05rem}
+.logo .light{color:var(--faint)}
+.wrap{max-width:1200px;margin:0 auto;padding:2rem 16px 4rem;display:flex;flex-direction:column;gap:2rem}
+h1{font-weight:900;font-size:1.9rem;letter-spacing:-0.03em}
+.msg{background:#FEF3C7;border:1px solid var(--wait);padding:0.75rem 1rem}
+.counts{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--ink)}
+.count{padding:0.9rem 1rem;border-right:1px solid var(--hair)}
+.count:last-child{border-right:none}
+.count b{display:block;font-size:1.7rem;font-weight:900;font-variant-numeric:tabular-nums}
+.count span{font-size:0.78rem;color:var(--muted)}
+.new{border:1px solid var(--ink);background:#fff}
+.new summary{padding:0.9rem 1rem;font-weight:900;cursor:pointer;list-style:none}
+.new summary::before{content:"+ ";color:var(--red)}
+.new form{padding:0 1rem 1rem;display:grid;grid-template-columns:2fr 1fr 1fr;gap:0.75rem}
+.new label{display:block;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem}
+.new .full{grid-column:1/-1}
+input,textarea{width:100%;padding:0.65rem 0.75rem;border:1px solid var(--ink);font:inherit;background:var(--bg);border-radius:0}
+textarea{min-height:70px;resize:vertical}
+button,.btn{font:inherit;font-weight:700;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;padding:0.7rem 1rem;
+  border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
+button:hover,.btn:hover{background:var(--red);border-color:var(--red)}
+.scroll{overflow-x:auto;border:1px solid var(--ink);background:#fff}
+table{width:100%;border-collapse:collapse;min-width:900px}
+th,td{text-align:left;padding:0.75rem;border-bottom:1px solid var(--hair);vertical-align:top}
+th{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);background:#F0EEE8}
+tr:last-child td{border-bottom:none}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;
+      padding:0.2rem 0.5rem;border:1px solid currentColor;white-space:nowrap}
+.s-wartet{color:var(--wait)}.s-freigegeben{color:var(--sent)}.s-akquise{color:var(--acq)}.s-live{color:var(--live)}
+.sw{display:inline-block;width:10px;height:10px;margin-right:5px;vertical-align:-1px;border:1px solid #0003}
+.muted{color:var(--faint);font-size:0.8rem}
+a{color:var(--ink)}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+@media(max-width:760px){.counts{grid-template-columns:1fr 1fr}.new form{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav><div class="logo">stell<span class="light">en</span>schraube · Angebotsübersicht</div><a class="muted" href="/vorschau" target="_blank">Öffentliche Maske ↗</a></nav>
+<main class="wrap">
+  <h1>Angebotsübersicht</h1>
+  {% if msg %}<div class="msg" role="alert">{{ msg }}</div>{% endif %}
+
+  <div class="counts">
+    {% for s in ["wartet", "akquise", "freigegeben", "live"] %}
+    <div class="count"><b class="s-{{ s }}">{{ rows|selectattr("status", "equalto", s)|list|length }}</b><span>{{ STATUS_LABEL[s] }}</span></div>
+    {% endfor %}
+  </div>
+
+  <details class="new">
+    <summary>Neuer Akquise-Vorschlag aus einem Inserat</summary>
+    <form method="post" action="/intern/neu">
+      <div class="full"><label for="input">Link zum Inserat oder Inseratstext</label>
+        <textarea id="input" name="input" required placeholder="https://www.jobs.ch/de/stellenangebote/detail/…"></textarea></div>
+      <div><label for="job_title">Stelle (falls nicht erkannt)</label><input id="job_title" name="job_title"></div>
+      <div><label for="name">Ansprechperson</label><input id="name" name="name" placeholder="z.B. Herr Frutiger"></div>
+      <div><label for="email">E-Mail Betrieb</label><input id="email" name="email" type="email"></div>
+      <div class="full"><button type="submit">Formular erstellen</button></div>
+    </form>
+  </details>
+
+  <div class="scroll"><table>
+    <tr><th>Status</th><th>Erstellt</th><th>Betrieb / Stelle</th><th>Unterseite</th><th>Lead</th><th>Design · Fragen</th><th>Bewerbungen</th></tr>
+    {% for r in rows %}
+    <tr>
+      <td><span class="pill s-{{ r.status }}">{{ STATUS_LABEL[r.status] }}</span></td>
+      <td class="muted">{{ r.created|dt }}</td>
+      <td><a href="/intern/{{ r.slug }}"><strong>{{ r.data.company_name }}</strong></a><br>{{ r.data.job_title }}</td>
+      <td><a href="/employer/{{ r.slug }}" target="_blank">/employer/{{ r.slug }}</a></td>
+      <td>{{ r.lead.name or '' }}{% if r.lead.email %}<br><span class="muted">{{ r.lead.email }}</span>{% endif %}
+          {% if r.lead.telefon %}<br><span class="muted">{{ r.lead.telefon }}</span>{% endif %}</td>
+      <td><span class="sw" style="background:{{ r.data.brand.accent }}"></span><span class="muted">{{ r.data.branch }} · {{ r.data.question_source }}</span></td>
+      <td class="num">{{ r.n }}</td>
+    </tr>
+    {% else %}<tr><td colspan="7" class="muted">Noch keine Formulare.</td></tr>{% endfor %}
+  </table></div>
+</main>
+</body>
+</html>

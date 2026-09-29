@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+.pytest_cache/
+*.sqlite3
+.env
+vorschau-bilder/
+testlauf/*.png
+testlauf/*.jpg
+testlauf/log.json
+testlauf/run1/
+testlauf/bericht.html
