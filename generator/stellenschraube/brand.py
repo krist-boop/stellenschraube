@@ -42,9 +42,14 @@ def luminance(h):
     return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
 
+def contrast(a, b):
+    la, lb = sorted((luminance(a), luminance(b)), reverse=True)
+    return (la + 0.05) / (lb + 0.05)
+
+
 def on_color(h):
-    """Textfarbe, die auf dieser Farbe lesbar ist."""
-    return "#0A0A08" if luminance(h) > 0.45 else "#FFFFFF"
+    """Schwarz oder Weiss – je nachdem, was auf dieser Farbe den höheren Kontrast hat."""
+    return "#0A0A08" if contrast(h, "#0A0A08") >= contrast(h, "#FFFFFF") else "#FFFFFF"
 
 
 def pick_accent(css_chunks, theme_color=None):

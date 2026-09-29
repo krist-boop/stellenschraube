@@ -45,6 +45,10 @@ input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(-
 .btns button{background:var(--white);color:var(--black)}
 .again{background:none;border:none;font:inherit;font-size:0.85rem;color:var(--gray);text-decoration:underline;cursor:pointer;align-self:flex-start}
 @media(prefers-reduced-motion:reduce){.spin{animation:none}}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+.done-body p{font-size:0.95rem;color:var(--gray)}
+.done-body strong{color:var(--black)}
+@media(max-width:480px){.row2{grid-template-columns:1fr;gap:0}}
 </style>
 </head>
 <body>
@@ -54,7 +58,7 @@ input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(-
     <form id="f" novalidate>
       <div class="form-label">Kostenlose Vorschau</div>
       <h1>Wir bauen dir <span class="red">gratis</span> ein Bewerbungsformular.</h1>
-      <p class="sub">Gib deine Website oder den Link zu deinem Stelleninserat ein. Die Vorschau ist in wenigen Sekunden fertig.</p>
+      <p class="sub">Gib deine Website oder den Link zu deinem Stelleninserat ein. Wir bauen die Vorschau in deinem Design und schicken sie dir per Mail.</p>
 
       <div class="field">
         <label for="url">Website oder Link zum Inserat</label>
@@ -66,25 +70,31 @@ input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(-
         <div class="hint">Leer lassen, wenn der Link direkt aufs Inserat zeigt.</div>
       </div>
       <div class="field">
-        <label for="email">Deine E-Mail <span class="opt">(optional)</span></label>
-        <input id="email" name="email" type="email" autocomplete="email" placeholder="deine@firma.ch">
-        <div class="hint">Wir schicken dir den Link auch per Mail.</div>
+        <label for="email">Deine E-Mail</label>
+        <input id="email" name="email" type="email" autocomplete="email" placeholder="deine@firma.ch" required>
+        <div class="hint">Dorthin schicken wir dir die Vorschau.</div>
       </div>
-      <button class="btn" id="go" type="submit"><span class="spin"></span><span id="gotxt">Vorschau erstellen</span></button>
+      <div class="row2">
+        <div class="field">
+          <label for="name">Dein Name <span class="opt">(optional)</span></label>
+          <input id="name" name="name" autocomplete="name" placeholder="Vor- und Nachname">
+        </div>
+        <div class="field">
+          <label for="tel">Telefon <span class="opt">(optional)</span></label>
+          <input id="tel" name="tel" type="tel" autocomplete="tel" placeholder="079 123 45 67">
+        </div>
+      </div>
+      <button class="btn" id="go" type="submit"><span class="spin"></span><span id="gotxt">Vorschau anfragen</span></button>
       <div class="err" id="err" role="alert"></div>
     </form>
 
     <div class="done" id="done" role="status">
       <div class="done-head">
-        <div class="form-label">Vorschau bereit</div>
+        <div class="form-label">Anfrage erhalten</div>
         <h2 id="done-title"></h2>
       </div>
       <div class="done-body">
-        <div class="link" id="link"></div>
-        <div class="btns">
-          <a id="open" href="#" target="_blank" rel="noopener">Vorschau öffnen</a>
-          <button type="button" id="copy">Link kopieren</button>
-        </div>
+        <p>Wir prüfen deine Vorschau persönlich und schicken dir den Link innert 24 Stunden an <strong id="done-mail"></strong>.</p>
         <button type="button" class="again" id="again">Weitere Stelle eingeben</button>
       </div>
     </div>
@@ -92,27 +102,24 @@ input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(-
 </main>
 <script>
 const $ = id => document.getElementById(id);
+function fail(msg, field){ $('err').textContent = msg; if (field) $(field === 'job' ? 'job' : field === 'email' ? 'email' : 'url').focus(); }
 $('f').addEventListener('submit', async e => {
   e.preventDefault();
   const url = $('url').value.trim(), email = $('email').value.trim();
-  if (!/[\w-]+\.[a-z]{2,}/i.test(url)) { $('err').textContent = 'Bitte gib eine Website ein, z.B. www.deine-firma.ch'; return; }
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { $('err').textContent = 'Die E-Mail-Adresse sieht nicht vollständig aus.'; return; }
-  $('err').textContent = ''; $('go').disabled = true; $('gotxt').textContent = 'Vorschau wird gebaut …';
+  if (!/[\w-]+\.[a-z]{2,}/i.test(url)) return fail('Bitte gib eine Website ein, z.B. www.deine-firma.ch', 'url');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail('Bitte gib deine E-Mail ein, dorthin schicken wir die Vorschau.', 'email');
+  $('err').textContent = ''; $('go').disabled = true; $('gotxt').textContent = 'Wird geprüft …';
   try {
     const r = await fetch('/api/preview', {method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({input:url, job_title:$('job').value.trim(), email})});
+      body: JSON.stringify({input:url, job_title:$('job').value.trim(), email, name:$('name').value.trim(), telefon:$('tel').value.trim()})});
     const d = await r.json();
-    if (!r.ok) { $('err').textContent = d.error || 'Das hat nicht geklappt.'; if (d.field) $(d.field === 'job' ? 'job' : 'url').focus(); return; }
-    const link = location.origin + d.path;
+    if (!r.ok) return fail(d.error || 'Das hat nicht geklappt.', d.field);
     $('done-title').textContent = d.job_title + ' bei ' + d.company_name;
-    $('link').textContent = link; $('open').href = link;
+    $('done-mail').textContent = d.email;
     $('f').style.display = 'none'; $('done').classList.add('on');
   } catch (err) {
-    $('err').textContent = 'Keine Verbindung. Prüf dein Internet und versuch es nochmal.';
-  } finally { $('go').disabled = false; $('gotxt').textContent = 'Vorschau erstellen'; }
-});
-$('copy').addEventListener('click', async () => {
-  try { await navigator.clipboard.writeText($('link').textContent); $('copy').textContent = 'Kopiert'; setTimeout(() => $('copy').textContent = 'Link kopieren', 1800); } catch(_) {}
+    fail('Keine Verbindung. Prüf dein Internet und versuch es nochmal.');
+  } finally { $('go').disabled = false; $('gotxt').textContent = 'Vorschau anfragen'; }
 });
 $('again').addEventListener('click', () => { $('done').classList.remove('on'); $('f').style.display = ''; $('f').reset(); $('url').focus(); });
 </script>
